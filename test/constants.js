@@ -1,0 +1,1 @@
+export const NUM_SYNTHETIX_CONTRACTS = 153

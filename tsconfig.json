@@ -2,10 +2,10 @@
   "compilerOptions": {
     "declaration": true,
     "declarationDir": "./build",
-    "module": "es6",
+    "module": "esnext",
     "noImplicitAny": true,
     "outDir": "./build",
-    "target": "es2015",
+    "target": "esnext",
     "skipLibCheck": true
   },
   "include": [

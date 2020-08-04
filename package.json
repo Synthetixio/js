@@ -12,22 +12,27 @@
     "build": "rollup -c",
     "lint": "eslint './src/**/*.{js,ts,tsx}' && tsc",
     "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}'",
-    "test": "mocha",
-    "coverage": "nyc npm run test",
+    "test": "jest --forceExit --coverage --no-cache",
     "tsc": "tsc --noemit"
   },
   "author": {
     "name": "David Schwartz"
   },
   "devDependencies": {
+    "@babel/core": "7.11.0",
+    "@babel/preset-env": "7.11.0",
+    "@babel/preset-typescript": "7.10.4",
     "@rollup/plugin-commonjs": "14.0.0",
     "@rollup/plugin-node-resolve": "8.4.0",
     "@typescript-eslint/eslint-plugin": "3.8.0",
     "@typescript-eslint/parser": "3.8.0",
+    "babel-jest": "26.2.2",
+    "eslint": "7.6.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-prettier": "3.1.4",
     "husky": "4.2.5",
     "jest": "24.9.0",
-    "mocha": "8.1.0",
-    "nyc": "15.1.0",
     "prettier": "2.0.5",
     "rollup": "2.11.2",
     "rollup-plugin-peer-deps-external": "2.2.3",
@@ -35,6 +40,8 @@
     "typescript": "3.9.3"
   },
   "dependencies": {
+    "ethers": "5.0.7",
+    "lodash": "4.17.19",
     "synthetix": "2.26.2"
   },
   "husky": {
@@ -47,5 +54,15 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }

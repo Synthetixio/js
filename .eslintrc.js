@@ -1,30 +1,42 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es2020: true,
     node: true,
   },
   extends: [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended'
   ],
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: "./tsconfig.json",
-    sourceType: "module",
+    ecmaVersion: 2020,
+    sourceType: 'module',
+    project: './tsconfig.json'
   },
-  plugins: ["@typescript-eslint", "@typescript-eslint/tslint"],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    "no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
-    "comma-dangle": [
-      "error",
+    'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
+    'comma-dangle': [
+      'error',
       {
-        arrays: "always-multiline",
-        objects: "always-multiline",
-        imports: "always-multiline",
-        exports: "always-multiline",
-        functions: "never",
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'never',
       },
     ],
+    indent: 'off',
+    quotes: ['error', 'single'],
+    'import/no-unresolved': [2, { commonjs: true }],
+    'no-undef': 2,
+    'prefer-const': 2,
+    semi: 'off',
+    'comma-dangle': 'off',
+    'no-console': 2,
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
-};
+}

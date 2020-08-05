@@ -1,5 +1,5 @@
-import { ethers } from 'ethers'
-import { Networks } from '../types'
+import { ethers } from 'ethers';
+import { Networks } from './types';
 
 export const createContractInstance = (
 	address: string,
@@ -11,4 +11,4 @@ export const createContractInstance = (
 		address,
 		abi,
 		signerOrProvider ?? ethers.getDefaultProvider(network ?? Networks.Mainnet),
-	)
+	);

@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { ethers } from 'ethers';
 
 export enum Networks {
 	Mainnet = 'mainnet',
@@ -7,13 +7,8 @@ export enum Networks {
 	Kovan = 'kovan',
 }
 
-export enum EthereumLibraries {
-	Ethers = 'ethers',
-}
-
 export interface Config {
-	network: Networks
-	signer?: ethers.Signer
-	provider?: ethers.providers.Provider
-	library: EthereumLibraries
+	network: Networks;
+	signer?: ethers.Signer;
+	provider?: ethers.providers.Provider;
 }

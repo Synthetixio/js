@@ -5,11 +5,11 @@
     "module": "esnext",
     "noImplicitAny": true,
     "outDir": "./build",
-    "target": "esnext",
+    "target": "es6",
     "skipLibCheck": true
   },
   "include": [
-    "src/index.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"

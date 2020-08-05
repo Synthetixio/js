@@ -1,1 +1,1 @@
-export const NUM_SYNTHETIX_CONTRACTS = 153
+export const NUM_SYNTHETIX_CONTRACTS = 153;

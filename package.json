@@ -4,6 +4,7 @@
   "description": "A library for interacting with Synthetix smart contracts",
   "main": "build/index.js",
   "module": "build/index.es.js",
+  "browser": "build/index.browser.js",
   "files": [
     "build"
   ],

@@ -21,6 +21,7 @@ export default {
       sourcemap: true,
     },
     {
+      name: 'index.browser.js',
       file: pkg.browser,
       format: 'umd',
       exports: 'named',

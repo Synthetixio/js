@@ -1,14 +1,16 @@
 import { ethers } from 'ethers';
 import { Networks } from './types';
 
-export const createContractInstance = (
+const createContractInstance = (
 	address: string,
 	abi: ethers.ContractInterface,
 	signerOrProvider?: ethers.Signer | ethers.providers.Provider,
-	network?: Networks,
+	network?: Networks
 ): ethers.Contract =>
 	new ethers.Contract(
 		address,
 		abi,
-		signerOrProvider ?? ethers.getDefaultProvider(network ?? Networks.Mainnet),
+		signerOrProvider ?? ethers.getDefaultProvider(network ?? Networks.Mainnet)
 	);
+
+export default createContractInstance;

@@ -1,17 +1,19 @@
 {
-  "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./build",
-    "module": "esnext",
-    "noImplicitAny": true,
-    "outDir": "./build",
-    "target": "es6",
-    "skipLibCheck": true
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"allowJs": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"declaration": true,
+		"declarationDir": "./build",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"module": "esnext",
+		"outDir": "./build",
+		"target": "es6",
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"baseUrl": "src"
+	},
+	"include": ["src"]
 }

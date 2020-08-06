@@ -1,1 +1,3 @@
-export const NUM_SYNTHETIX_CONTRACTS = 153;
+export const numSynthetixContracts = 153;
+export const validContractName = 'FeePool';
+export const badContractName = 'RandomContract';

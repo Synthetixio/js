@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import findIndex from 'lodash/findIndex';
 
 import { numSynthetixContracts, badContractName, validContractName } from './constants';
 import SynthetixJS from '../src';
@@ -10,7 +9,7 @@ describe('@synthetixio/js tests', () => {
   let synthetix;
 
   beforeAll(() => {
-    synthetix = new SynthetixJS({ network: Networks.Kovan });
+    synthetix = SynthetixJS({ network: Networks.Kovan });
   });
 
   test('should return the right number of contracts', () => {
@@ -18,7 +17,7 @@ describe('@synthetixio/js tests', () => {
   });
 
   test('should return the ethers object', () => {
-    expect(typeof SynthetixJS.utils).toBe(typeof ethers.utils);
+    expect(typeof synthetix.utils).toBe(typeof ethers.utils);
   });
 
   // TODO define a provider and test it works too
@@ -28,47 +27,26 @@ describe('@synthetixio/js tests', () => {
   });
 
   test('should include the supported networks', () => {
-    const supportedNetworks = SynthetixJS.supportedNetworks;
-    expect(supportedNetworks[NetworkIds.Mainnet]).toBe(Networks.Mainnet);
-    expect(supportedNetworks[NetworkIds.Kovan]).toBe(Networks.Kovan);
-    expect(supportedNetworks[NetworkIds.Rinkeby]).not.toBe(Networks.Ropsten);
+    expect(synthetix.supportedNetworks[NetworkIds.Mainnet]).toBe(Networks.Mainnet);
+    expect(synthetix.supportedNetworks[NetworkIds.Kovan]).toBe(Networks.Kovan);
+    expect(synthetix.supportedNetworks[NetworkIds.Rinkeby]).not.toBe(Networks.Ropsten);
   });
 
-  test('should return the right number of contracts in the data key', () => {
-    expect(synthetix.contractsData.length).toBe(numSynthetixContracts);
-  });
-
-  test('should return a valid contract', () => {
-    const validContract = findIndex(synthetix.contractsData, c => c.name == validContractName);
-    expect(validContract).not.toBe(-1);
-    const validContractTwo = findIndex(synthetix.contracts, c => c[validContractName]);
-    expect(validContractTwo).not.toBe(-1);
+  test('should return valid contracts', () => {
+    const validContract = synthetix.contracts[validContractName]
+    expect(validContract.name).toBe(validContractName);
   });
 
   test('should return an invalid contract', () => {
-    const invalidContract = findIndex(synthetix.contractsData, c => c.name == badContractName);
-    expect(invalidContract).toBe(-1);
-    const invalidContractTwo = findIndex(synthetix.contracts, c => c[badContractName]);
-    expect(invalidContractTwo).toBe(-1);
+    const invalidContract = synthetix.contracts[badContractName]
+    expect(invalidContract).toBe(undefined);
   });
 
   test('should throw error with wrong network', () => {
     try {
-      new SynthetixJS({ network: 'wrongnetwork' });
+      SynthetixJS({ network: 'wrongnetwork' });
     } catch (e) {
       expect(e.message).toEqual(Errors.badNetworkArg);
     }
-  });
-
-  test('should pull all the contract names', () => {
-    expect(synthetix.contractNames.includes(validContractName)).toBeTruthy();
-    expect(synthetix.contractNames.includes(badContractName)).toBeFalsy();
-  });
-
-  test('should get address by contract name and vice versa', () => {
-    const validAddress = synthetix.getAddressByContractName(validContractName);
-    expect(validAddress.startsWith('0x')).toBeTruthy();
-    expect(synthetix.getContractNameByAddress(validAddress)).toEqual(validContractName);
-    expect(synthetix.getAddressByContractName(badContractName)).toEqual(Errors.noMatch('name', badContractName));
   });
 });

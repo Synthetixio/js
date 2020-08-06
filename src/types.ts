@@ -20,10 +20,18 @@ export type Target = {
 	address: string;
 };
 
-export type ContractDefinition = {
+export interface ContractDefinition {
 	name: string;
 	abi: ethers.ContractInterface;
 	address: string;
+}
+
+export interface ContractDefinitionWithInstance extends ContractDefinition {
+	instance: ethers.Contract;
+}
+
+export type ContractsMap = {
+	[name: string]: ContractDefinitionWithInstance;
 };
 
 export type Config = {

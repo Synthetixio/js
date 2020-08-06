@@ -33,12 +33,12 @@ describe('@synthetixio/js tests', () => {
   });
 
   test('should return valid contracts', () => {
-    const validContract = synthetix.contracts[validContractName]
+    const validContract = synthetix.contracts[validContractName];
     expect(validContract.name).toBe(validContractName);
   });
 
   test('should return an invalid contract', () => {
-    const invalidContract = synthetix.contracts[badContractName]
+    const invalidContract = synthetix.contracts[badContractName];
     expect(invalidContract).toBe(undefined);
   });
 

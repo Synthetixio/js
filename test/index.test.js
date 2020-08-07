@@ -1,52 +1,90 @@
 import { ethers } from 'ethers';
+import findIndex from 'lodash/findIndex';
 
-import { numSynthetixContracts, badContractName, validContractName } from './constants';
-import SynthetixJS from '../src';
+import {
+  numSynthetixContracts,
+  badContractName,
+  validContractName,
+  numUsers,
+  validSynthName,
+  badSynthName,
+  snxBytes
+} from './constants';
+import synthetix from '../src';
 import { Networks, NetworkIds } from '../src/types';
-import { Errors } from '../src/constants';
+import { ERRORS } from '../src/constants';
 
 describe('@synthetixio/js tests', () => {
-  let synthetix;
+  let snxjs;
 
   beforeAll(() => {
-    synthetix = SynthetixJS({ network: Networks.Kovan });
+    snxjs = synthetix({ network: Networks.Kovan });
   });
 
   test('should return the right number of contracts', () => {
-    expect(Object.keys(synthetix.contracts).length).toBe(numSynthetixContracts);
+    expect(Object.keys(snxjs.targets).length).toBe(numSynthetixContracts);
   });
 
   test('should return the ethers object', () => {
-    expect(typeof synthetix.utils).toBe(typeof ethers.utils);
-  });
-
-  // TODO define a provider and test it works too
-  test('should leave the class signer and provider undefined when not included in the constructor', () => {
-    expect(typeof synthetix.provider).toBe('undefined');
-    expect(typeof synthetix.signer).toBe('undefined');
+    expect(typeof snxjs.ethers.utils).toBe(typeof ethers.utils);
   });
 
   test('should include the supported networks', () => {
-    expect(synthetix.supportedNetworks[NetworkIds.Mainnet]).toBe(Networks.Mainnet);
-    expect(synthetix.supportedNetworks[NetworkIds.Kovan]).toBe(Networks.Kovan);
-    expect(synthetix.supportedNetworks[NetworkIds.Rinkeby]).not.toBe(Networks.Ropsten);
+    expect(snxjs.supportedNetworks[NetworkIds.Mainnet]).toBe(Networks.Mainnet);
+    expect(snxjs.supportedNetworks[NetworkIds.Kovan]).toBe(Networks.Kovan);
+    expect(snxjs.supportedNetworks[NetworkIds.Rinkeby]).not.toBe(Networks.Ropsten);
+  });
+
+  test('should include the current network', () => {
+    expect(snxjs.currentNetwork).toBe(Networks.Kovan);
+  });
+
+  test('should return the right number of users', () => {
+    expect(snxjs.users.length).toBe(numUsers);
   });
 
   test('should return valid contracts', () => {
-    const validContract = synthetix.contracts[validContractName];
+    const validContract = snxjs[validContractName];
     expect(validContract.name).toBe(validContractName);
+    expect(validContract.address).not.toBe(undefined);
+    expect(validContract.contract).not.toBe(undefined);
   });
 
-  test('should return an invalid contract', () => {
-    const invalidContract = synthetix.contracts[badContractName];
+  test('should not return an invalid contract', () => {
+    const invalidContract = snxjs[badContractName];
     expect(invalidContract).toBe(undefined);
+  });
+
+  test('should get the right sources data', () => {
+    const validSource = snxjs.sources[validContractName];
+    expect(validSource.bytecode).not.toBe(undefined);
+    expect(validSource.abi).not.toBe(undefined);
+  });
+
+  test('should not include invalid sources data', () => {
+    const invalidSource = snxjs.sources[badContractName];
+    expect(invalidSource).toBe(undefined);
+  });
+
+  test('should get the right synths data', () => {
+    const validSynthIndex = findIndex(snxjs.synths, (({ name }) => name === validSynthName));
+    expect(validSynthIndex).not.toBe(-1);
+  });
+
+  test('should not include invalid synths data', () => {
+    const invalidSynthIndex = findIndex(snxjs.synths, (({ name }) => name === badSynthName));
+    expect(invalidSynthIndex).toBe(-1);
+  });
+
+  test('toBytes32 is working properly', () => {
+    expect(snxjs.toBytes32('SNX')).toBe(snxBytes);
   });
 
   test('should throw error with wrong network', () => {
     try {
-      SynthetixJS({ network: 'wrongnetwork' });
+      synthetix({ network: 'wrongnetwork' });
     } catch (e) {
-      expect(e.message).toEqual(Errors.badNetworkArg);
+      expect(e.message).toEqual(ERRORS.badNetworkArg);
     }
   });
 });

@@ -2,6 +2,7 @@ import typescript from 'rollup-plugin-typescript2'
 import external from 'rollup-plugin-peer-deps-external'
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 import pkg from './package.json'
 
@@ -21,12 +22,12 @@ export default {
       sourcemap: true,
     },
     {
-      name: 'index.browser.js',
+      name: 'synthetix',
       file: pkg.browser,
       format: 'umd',
       exports: 'named',
       sourcemap: true,
     },
   ],
-  plugins: [external(), resolve(), typescript(), commonjs()],
+  plugins: [external(), resolve(), typescript(), commonjs(), nodePolyfills()],
 }

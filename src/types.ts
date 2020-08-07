@@ -14,11 +14,35 @@ export enum NetworkIds {
 	Kovan = 42,
 }
 
+export type SynthetixJS = {
+	currentNetwork: Networks;
+	supportedNetworks: SupportedNetworks;
+	sources: { [name: string]: SourceData };
+	targets: TargetsRecord;
+	synths: Synth[];
+	users: User[];
+	toBytes32: (key: string) => string;
+	ethers: typeof ethers;
+};
+
+export type SupportedNetworks = Record<NetworkIds, Networks>;
+
+export type SourceData = {
+	bytecode: string;
+	abi: ethers.ContractInterface;
+};
+
 export type Target = {
 	name: string;
 	source: string;
 	address: string;
+	link: string;
+	timestamp: string;
+	txn: string;
+	network: Networks;
 };
+
+export type TargetsRecord = Record<string, Target>;
 
 export interface ContractDefinition {
 	name: string;
@@ -26,12 +50,14 @@ export interface ContractDefinition {
 	address: string;
 }
 
-export interface ContractDefinitionWithInstance extends ContractDefinition {
-	instance: ethers.Contract;
+export interface ContractWithInstance {
+	name: string;
+	address: string;
+	contract: ethers.Contract;
 }
 
 export type ContractsMap = {
-	[name: string]: ContractDefinitionWithInstance;
+	[name: string]: ContractWithInstance;
 };
 
 export type Config = {
@@ -39,4 +65,19 @@ export type Config = {
 	network?: Networks;
 	signer?: ethers.Signer;
 	provider?: ethers.providers.Provider;
+};
+
+export type Synth = {
+	name: string;
+	asset: string;
+	category: string;
+	sign: string;
+	desc: string;
+	aggregator?: string;
+	subclass?: string;
+};
+
+export type User = {
+	name: string;
+	address: string;
 };

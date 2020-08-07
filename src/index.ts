@@ -7,32 +7,44 @@ import {
 	Config,
 	Networks,
 	NetworkIds,
-	ContractDefinitionWithInstance,
+	ContractWithInstance,
 	Target,
+	TargetsRecord,
 	ContractsMap,
+	SynthetixJS,
+	SupportedNetworks,
 } from './types';
-import { SupportedNetworks, Errors } from './constants';
+import { SUPPORTED_NETWORKS, ERRORS } from './constants';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function ({ networkId, network, signer, provider }: Config) {
 	const currentNetwork = selectNetwork(networkId, network);
-	return {
+	const synthetixData: SynthetixJS = {
 		currentNetwork,
-		contracts: getSynthetixContracts(currentNetwork, signer, provider),
 		supportedNetworks,
-		utils,
+		sources: snx.getSource({ network: currentNetwork }),
+		targets: snx.getTarget({ network: currentNetwork }),
+		synths: snx.getSynths({ network: currentNetwork }),
+		users: snx.getUsers({ network: currentNetwork }),
+		toBytes32: snx.toBytes32,
+		ethers,
+	};
+	const contracts: ContractsMap = getSynthetixContracts(currentNetwork, signer, provider);
+	return {
+		...contracts,
+		...synthetixData,
 	};
 }
 
-const supportedNetworks: Record<NetworkIds, Networks> = SupportedNetworks;
-const utils: typeof ethers.utils = ethers.utils;
+const supportedNetworks: SupportedNetworks = SUPPORTED_NETWORKS;
 
 const selectNetwork = (networkId?: NetworkIds, network?: Networks): Networks => {
 	let currentNetwork: Networks = Networks.Mainnet;
 	if (
 		(network && !Object.values(Networks).includes(network)) ||
-		(networkId && !SupportedNetworks[networkId])
+		(networkId && !supportedNetworks[networkId])
 	) {
-		throw new Error(Errors.badNetworkArg);
+		throw new Error(ERRORS.badNetworkArg);
 	} else if (network && Object.values(Networks).includes(network)) {
 		currentNetwork = network;
 	} else if (networkId) {
@@ -47,14 +59,13 @@ const getSynthetixContracts = (
 	provider?: ethers.providers.Provider
 ): ContractsMap => {
 	const sources = snx.getSource({ network });
-	const targets: Record<string, Target> = snx.getTarget({ network });
+	const targets: TargetsRecord = snx.getTarget({ network });
 
 	const contracts = Object.values(targets).map(
-		({ name, source, address }: Target): ContractDefinitionWithInstance => ({
+		({ name, source, address }: Target): ContractWithInstance => ({
 			name,
-			abi: sources[source].abi,
 			address,
-			instance: new ethers.Contract(
+			contract: new ethers.Contract(
 				address,
 				sources[source].abi,
 				signer || provider || ethers.getDefaultProvider(network)

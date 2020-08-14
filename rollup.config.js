@@ -1,7 +1,7 @@
 import typescript from 'rollup-plugin-typescript2';
-import external from 'rollup-plugin-peer-deps-external';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import json from '@rollup/plugin-json';
 
 import pkg from './package.json';
 
@@ -28,5 +28,5 @@ export default {
 			sourcemap: true,
 		},
 	],
-	plugins: [external(), resolve(), typescript(), commonjs()],
+	plugins: [json(), resolve(), typescript(), commonjs()],
 };

@@ -1,13 +1,11 @@
 // @ts-ignore
-import * as snx from 'synthetix';
+import { getSource, getTarget, getSynths, getUsers, toBytes32 } from 'synthetix/browser';
 import { ethers } from 'ethers';
-import keyBy from 'lodash/keyBy';
 
 import {
 	Config,
 	Networks,
 	NetworkIds,
-	ContractWithInstance,
 	Target,
 	TargetsRecord,
 	ContractsMap,
@@ -22,11 +20,11 @@ export default function ({ networkId, network, signer, provider }: Config) {
 	const synthetixData: SynthetixJS = {
 		currentNetwork,
 		supportedNetworks,
-		sources: snx.getSource({ network: currentNetwork }),
-		targets: snx.getTarget({ network: currentNetwork }),
-		synths: snx.getSynths({ network: currentNetwork }),
-		users: snx.getUsers({ network: currentNetwork }),
-		toBytes32: snx.toBytes32,
+		sources: getSource({ network: currentNetwork }),
+		targets: getTarget({ network: currentNetwork }),
+		synths: getSynths({ network: currentNetwork }),
+		users: getUsers({ network: currentNetwork }),
+		toBytes32,
 		ethers,
 	};
 	const contracts: ContractsMap = getSynthetixContracts(currentNetwork, signer, provider);
@@ -58,20 +56,18 @@ const getSynthetixContracts = (
 	signer?: ethers.Signer,
 	provider?: ethers.providers.Provider
 ): ContractsMap => {
-	const sources = snx.getSource({ network });
-	const targets: TargetsRecord = snx.getTarget({ network });
+	const sources = getSource({ network });
+	const targets: TargetsRecord = getTarget({ network });
 
-	const contracts = Object.values(targets).map(
-		({ name, source, address }: Target): ContractWithInstance => ({
-			name,
+	const contracts: ContractsMap = {};
+
+	Object.values(targets).forEach(({ name, source, address }: Target) => {
+		contracts[name] = new ethers.Contract(
 			address,
-			contract: new ethers.Contract(
-				address,
-				sources[source].abi,
-				signer || provider || ethers.getDefaultProvider(network)
-			),
-		})
-	);
+			sources[source].abi,
+			signer || provider || ethers.getDefaultProvider(network)
+		);
+	});
 
-	return keyBy(contracts, 'name');
+	return contracts;
 };

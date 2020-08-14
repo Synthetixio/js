@@ -45,9 +45,7 @@ describe('@synthetixio/js tests', () => {
 
 	test('should return valid contracts', () => {
 		const validContract = snxjs[validContractName];
-		expect(validContract.name).toBe(validContractName);
-		expect(validContract.address).not.toBe(undefined);
-		expect(validContract.contract).not.toBe(undefined);
+		expect(validContract).not.toBe(undefined);
 	});
 
 	test('should not return an invalid contract', () => {

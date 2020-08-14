@@ -50,14 +50,8 @@ export interface ContractDefinition {
 	address: string;
 }
 
-export interface ContractWithInstance {
-	name: string;
-	address: string;
-	contract: ethers.Contract;
-}
-
 export type ContractsMap = {
-	[name: string]: ContractWithInstance;
+	[name: string]: ethers.Contract;
 };
 
 export type Config = {

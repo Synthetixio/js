@@ -2,89 +2,89 @@ import { ethers } from 'ethers';
 import findIndex from 'lodash/findIndex';
 
 import {
-  numSynthetixContracts,
-  badContractName,
-  validContractName,
-  numUsers,
-  validSynthName,
-  badSynthName,
-  snxBytes
+	numSynthetixContracts,
+	badContractName,
+	validContractName,
+	numUsers,
+	validSynthName,
+	badSynthName,
+	snxBytes,
 } from './constants';
 import synthetix from '../src';
 import { Networks, NetworkIds } from '../src/types';
 import { ERRORS } from '../src/constants';
 
 describe('@synthetixio/js tests', () => {
-  let snxjs;
+	let snxjs;
 
-  beforeAll(() => {
-    snxjs = synthetix({ network: Networks.Kovan });
-  });
+	beforeAll(() => {
+		snxjs = synthetix({ network: Networks.Kovan });
+	});
 
-  test('should return the right number of contracts', () => {
-    expect(Object.keys(snxjs.targets).length).toBe(numSynthetixContracts);
-  });
+	test('should return the right number of contracts', () => {
+		expect(Object.keys(snxjs.targets).length).toBe(numSynthetixContracts);
+	});
 
-  test('should return the ethers object', () => {
-    expect(typeof snxjs.ethers.utils).toBe(typeof ethers.utils);
-  });
+	test('should return the ethers object', () => {
+		expect(typeof snxjs.ethers.utils).toBe(typeof ethers.utils);
+	});
 
-  test('should include the supported networks', () => {
-    expect(snxjs.supportedNetworks[NetworkIds.Mainnet]).toBe(Networks.Mainnet);
-    expect(snxjs.supportedNetworks[NetworkIds.Kovan]).toBe(Networks.Kovan);
-    expect(snxjs.supportedNetworks[NetworkIds.Rinkeby]).not.toBe(Networks.Ropsten);
-  });
+	test('should include the supported networks', () => {
+		expect(snxjs.supportedNetworks[NetworkIds.Mainnet]).toBe(Networks.Mainnet);
+		expect(snxjs.supportedNetworks[NetworkIds.Kovan]).toBe(Networks.Kovan);
+		expect(snxjs.supportedNetworks[NetworkIds.Rinkeby]).not.toBe(Networks.Ropsten);
+	});
 
-  test('should include the current network', () => {
-    expect(snxjs.currentNetwork).toBe(Networks.Kovan);
-  });
+	test('should include the current network', () => {
+		expect(snxjs.currentNetwork).toBe(Networks.Kovan);
+	});
 
-  test('should return the right number of users', () => {
-    expect(snxjs.users.length).toBe(numUsers);
-  });
+	test('should return the right number of users', () => {
+		expect(snxjs.users.length).toBe(numUsers);
+	});
 
-  test('should return valid contracts', () => {
-    const validContract = snxjs[validContractName];
-    expect(validContract.name).toBe(validContractName);
-    expect(validContract.address).not.toBe(undefined);
-    expect(validContract.contract).not.toBe(undefined);
-  });
+	test('should return valid contracts', () => {
+		const validContract = snxjs[validContractName];
+		expect(validContract.name).toBe(validContractName);
+		expect(validContract.address).not.toBe(undefined);
+		expect(validContract.contract).not.toBe(undefined);
+	});
 
-  test('should not return an invalid contract', () => {
-    const invalidContract = snxjs[badContractName];
-    expect(invalidContract).toBe(undefined);
-  });
+	test('should not return an invalid contract', () => {
+		const invalidContract = snxjs[badContractName];
+		expect(invalidContract).toBe(undefined);
+	});
 
-  test('should get the right sources data', () => {
-    const validSource = snxjs.sources[validContractName];
-    expect(validSource.bytecode).not.toBe(undefined);
-    expect(validSource.abi).not.toBe(undefined);
-  });
+	test('should get the right sources data', () => {
+		const validSource = snxjs.sources[validContractName];
+		expect(validSource.bytecode).not.toBe(undefined);
+		expect(validSource.abi).not.toBe(undefined);
+	});
 
-  test('should not include invalid sources data', () => {
-    const invalidSource = snxjs.sources[badContractName];
-    expect(invalidSource).toBe(undefined);
-  });
+	test('should not include invalid sources data', () => {
+		const invalidSource = snxjs.sources[badContractName];
+		expect(invalidSource).toBe(undefined);
+	});
 
-  test('should get the right synths data', () => {
-    const validSynthIndex = findIndex(snxjs.synths, (({ name }) => name === validSynthName));
-    expect(validSynthIndex).not.toBe(-1);
-  });
+	test('should get the right synths data', () => {
+		const validSynthIndex = findIndex(snxjs.synths, ({ name }) => name === validSynthName);
+		expect(validSynthIndex).not.toBe(-1);
+	});
 
-  test('should not include invalid synths data', () => {
-    const invalidSynthIndex = findIndex(snxjs.synths, (({ name }) => name === badSynthName));
-    expect(invalidSynthIndex).toBe(-1);
-  });
+	test('should not include invalid synths data', () => {
+		const invalidSynthIndex = findIndex(snxjs.synths, ({ name }) => name === badSynthName);
+		expect(invalidSynthIndex).toBe(-1);
+	});
 
-  test('toBytes32 is working properly', () => {
-    expect(snxjs.toBytes32('SNX')).toBe(snxBytes);
-  });
+	test('toBytes32 is working properly', () => {
+		expect(snxjs.toBytes32('SNX')).toBe(snxBytes);
+	});
 
-  test('should throw error with wrong network', () => {
-    try {
-      synthetix({ network: 'wrongnetwork' });
-    } catch (e) {
-      expect(e.message).toEqual(ERRORS.badNetworkArg);
-    }
-  });
+	test('should throw error with wrong network', () => {
+		try {
+			synthetix({ network: 'wrongnetwork' });
+		} catch (e) {
+			expect(e.message).toEqual(ERRORS.badNetworkArg);
+		}
+	});
 });

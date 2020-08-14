@@ -1,14 +1,14 @@
-Synthetix JS 
-======
+# Synthetix JS
 
 [![Synthetixio](https://circleci.com/gh/Synthetixio/js.svg?style=svg)](https://github.com/Synthetixio/js)
 
-### The official Javascript library for interacting with Synthetix protocol contracts. 
+### The official Javascript library for interacting with Synthetix protocol contracts.
 
 This library can be used in 3 different environments:
-  1. Common-js module for node environments
-  2. UMD module for browser environments
-  3. ES module for single page applications
+
+1. Common-js module for node environments
+2. UMD module for browser environments
+3. ES module for single page applications
 
 #### Installation
 

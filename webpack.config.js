@@ -6,7 +6,7 @@ const serveConfig = {
 		rules: [
 			{
 				test: /\.ts$/,
-				exclude: /node_modules/,
+				exclude: ['/node_modules/'],
 				use: {
 					loader: 'ts-loader',
 				},
@@ -24,7 +24,7 @@ const serveConfig = {
 	},
 	devtool: 'inline-source-map',
 	resolve: {
-		extensions: ['.ts', '.js'],
+		extensions: ['.ts'],
 	},
 };
 
@@ -33,7 +33,7 @@ const clientConfig = {
 		rules: [
 			{
 				test: /\.ts$/,
-				exclude: /node_modules/,
+				exclude: ['/node_modules/'],
 				use: {
 					loader: 'ts-loader',
 				},
@@ -50,7 +50,7 @@ const clientConfig = {
 	},
 	devtool: 'inline-source-map',
 	resolve: {
-		extensions: ['.ts', '.js'],
+		extensions: ['.ts'],
 	},
 };
 

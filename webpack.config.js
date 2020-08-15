@@ -19,7 +19,7 @@ const serveConfig = {
 		path: path.resolve(__dirname, 'build'),
 		filename: 'index.js',
 		library: 'synthetix',
-		libraryTarget: 'umd',
+		libraryTarget: 'commonjs',
 		globalObject: "typeof self !== 'undefined' ? self : this",
 	},
 	devtool: 'inline-source-map',

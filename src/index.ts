@@ -1,5 +1,5 @@
 // @ts-ignore
-import { getSource, getTarget, getSynths, getUsers, toBytes32 } from 'synthetix/browser';
+import { getSource, getTarget, getSynths, getUsers, toBytes32 } from 'synthetix';
 import { ethers } from 'ethers';
 
 import {

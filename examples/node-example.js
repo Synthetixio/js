@@ -1,14 +1,13 @@
 const synthetix = require('../build/node/index.js').default;
 
 (async () => {
-	console.log('what is in synthetix', synthetix);
 	// this instance exposes props for the given network: synths, sources, targets, users, as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.
 	const snxjs = synthetix({ network: 'mainnet' });
 
 	const { formatEther } = snxjs.ethers.utils;
 
 	const synths = snxjs.synths.map(({ name }) => name);
-	const fromBlock = blockTarget.value;
+	const fromBlock = 10260987;
 	const blockOptions = fromBlock ? { blockTag: Number(fromBlock) } : {};
 
 	let totalInUSD = 0;

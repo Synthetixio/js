@@ -10,7 +10,7 @@
 		<script src="../build/index.js"></script>
 		<script>
 			(async () => {
-				const synthetix = window.synthetix.default;
+				const { synthetix } = window.synthetix;
 				// this instance exposes props for the given network: synths, sources, targets, users, as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.
 				const snxjs = synthetix({ network: 'mainnet' });
 				console.log('snxjs', snxjs);

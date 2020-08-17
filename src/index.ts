@@ -1,4 +1,3 @@
-// @ts-ignore
 import { getSource, getTarget, getSynths, getUsers, toBytes32 } from 'synthetix';
 import { ethers } from 'ethers';
 
@@ -15,7 +14,7 @@ import {
 import { SUPPORTED_NETWORKS, ERRORS } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function ({ networkId, network, signer, provider }: Config) {
+const synthetix = ({ networkId, network, signer, provider }: Config) => {
 	const currentNetwork = selectNetwork(networkId, network);
 	const synthetixData: SynthetixJS = {
 		currentNetwork,
@@ -32,7 +31,7 @@ export default function ({ networkId, network, signer, provider }: Config) {
 		...contracts,
 		...synthetixData,
 	};
-}
+};
 
 const supportedNetworks: SupportedNetworks = SUPPORTED_NETWORKS;
 
@@ -71,3 +70,6 @@ const getSynthetixContracts = (
 
 	return contracts;
 };
+
+export { synthetix };
+export default synthetix;

@@ -13,16 +13,17 @@ This library can be used in 3 different environments:
 #### Installation
 
 ```
+
 // For node environments:
-const synthetix = require('@synthetixio/js');
+const { synthetix } = require('@synthetixio/js');
 
 // For single page applications:
-import synthetix from '@synthetixio/js';
+import { synthetix } from '@synthetixio/js';
 
 // For browser environments:
 // after running npm build take the index.browser.js file and put it in a script tag
 // then you can access synthetix on the window object:
-const synthetix = window.synthetix.default;
+const { synthetix } = window.synthetix;
 ```
 
 #### Usage

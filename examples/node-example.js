@@ -1,4 +1,6 @@
-const synthetix = require('../build/index.node.js')(async () => {
+const synthetix = require('../build/node/index.js').default;
+
+(async () => {
 	console.log('what is in synthetix', synthetix);
 	// this instance exposes props for the given network: synths, sources, targets, users, as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.
 	const snxjs = synthetix({ network: 'mainnet' });
@@ -40,5 +42,5 @@ const synthetix = require('../build/index.node.js')(async () => {
 	console.log('totalInUSD', totalInUSD);
 	console.log('results', results);
 })().catch((e) => {
-	console.log('error');
+	console.log('error', e);
 });

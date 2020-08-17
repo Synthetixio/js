@@ -1,7 +1,8 @@
 'use strict';
+
 const path = require('path');
 
-const serveConfig = {
+module.exports = {
 	module: {
 		rules: [
 			{
@@ -13,44 +14,15 @@ const serveConfig = {
 			},
 		],
 	},
-	target: 'node',
-	entry: './src/index.node.js',
+	entry: './src/index.ts',
+	target: 'web',
 	output: {
 		path: path.resolve(__dirname, 'build'),
-		filename: 'index.node.js',
+		filename: 'index.js',
 		library: 'synthetix',
-		libraryTarget: 'commonjs',
+		libraryTarget: 'umd',
 	},
-	devtool: 'inline-source-map',
 	resolve: {
 		extensions: ['.ts', '.js'],
 	},
 };
-
-const clientConfig = {
-	module: {
-		rules: [
-			{
-				test: /\.ts$/,
-				exclude: ['/node_modules/'],
-				use: {
-					loader: 'ts-loader',
-				},
-			},
-		],
-	},
-	entry: './src/index.browser.ts',
-	target: 'web',
-	output: {
-		path: path.resolve(__dirname, 'build'),
-		filename: 'index.browser.js',
-		library: 'synthetix',
-		libraryTarget: 'umd',
-	},
-	devtool: 'inline-source-map',
-	resolve: {
-		extensions: ['.ts'],
-	},
-};
-
-module.exports = [clientConfig, serveConfig];

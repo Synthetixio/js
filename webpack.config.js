@@ -14,17 +14,16 @@ const serveConfig = {
 		],
 	},
 	target: 'node',
-	entry: './src/index.ts',
+	entry: './src/index.node.js',
 	output: {
 		path: path.resolve(__dirname, 'build'),
-		filename: 'index.js',
+		filename: 'index.node.js',
 		library: 'synthetix',
 		libraryTarget: 'commonjs',
-		globalObject: "typeof self !== 'undefined' ? self : this",
 	},
 	devtool: 'inline-source-map',
 	resolve: {
-		extensions: ['.ts'],
+		extensions: ['.ts', '.js'],
 	},
 };
 
@@ -40,7 +39,7 @@ const clientConfig = {
 			},
 		],
 	},
-	entry: './src/index.ts',
+	entry: './src/index.browser.ts',
 	target: 'web',
 	output: {
 		path: path.resolve(__dirname, 'build'),

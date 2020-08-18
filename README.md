@@ -4,11 +4,10 @@
 
 ### The official Javascript library for interacting with Synthetix protocol contracts.
 
-This library can be used in 3 different environments:
+This library can be used in 2 different environments:
 
 1. Common-js module for node environments
 2. UMD module for browser environments
-3. ES module for single page applications
 
 #### Installation
 

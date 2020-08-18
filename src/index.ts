@@ -71,5 +71,6 @@ const getSynthetixContracts = (
 	return contracts;
 };
 
-export { synthetix };
+export { synthetix, Networks, NetworkIds };
+export type { Config, Target, TargetsRecord, ContractsMap, SynthetixJS, SupportedNetworks };
 export default synthetix;

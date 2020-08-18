@@ -24,6 +24,14 @@ import { synthetix } from '@synthetixio/js';
 // after running npm build take the index.browser.js file and put it in a script tag
 // then you can access synthetix on the window object:
 const { synthetix } = window.synthetix;
+
+
+const snxjs = synthetix({ network: 'mainnet' });
+
+
+// Note for typescript applications:
+import { synthetix, Networks } from '@synthetixio/js';
+const snxjs = synthetix({ network: Networks.Mainnet });
 ```
 
 #### Usage

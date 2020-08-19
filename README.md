@@ -22,7 +22,7 @@ import { synthetix } from '@synthetixio/js';
 // For browser environments:
 // after running npm build take the index.browser.js file and put it in a script tag
 // then you can access synthetix on the window object:
-const { synthetix } = window.synthetix;
+const { synthetix } = window;
 
 
 const snxjs = synthetix({ network: 'mainnet' });

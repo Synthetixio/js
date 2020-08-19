@@ -1,4 +1,5 @@
-const { synthetix } = require('../build/node/index.js');
+/// <reference types="../src/missing-types" />
+const { synthetix } = require('../src/index.ts');
 
 (async () => {
 	// this instance exposes props for the given network: synths, sources, targets, users, as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.

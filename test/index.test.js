@@ -9,6 +9,8 @@ import {
 	validSynthName,
 	badSynthName,
 	snxBytes,
+	suspensionReason,
+	numVersions,
 } from './constants';
 import synthetix from '../src';
 import { Networks, NetworkIds } from '../src/types';
@@ -26,7 +28,7 @@ describe('@synthetixio/js tests', () => {
 	});
 
 	test('should return the ethers object', () => {
-		expect(typeof snxjs.ethers.utils).toBe(typeof ethers.utils);
+		expect(typeof snxjs.utils).toBe(typeof ethers.utils);
 	});
 
 	test('should include the supported networks', () => {
@@ -72,6 +74,25 @@ describe('@synthetixio/js tests', () => {
 	test('should not include invalid synths data', () => {
 		const invalidSynthIndex = findIndex(snxjs.synths, ({ name }) => name === badSynthName);
 		expect(invalidSynthIndex).toBe(-1);
+	});
+
+	test('should have a list of staking rewards', () => {
+		expect(snxjs.stakingRewards.length).toEqual(0);
+		const mainnetSnxjs = synthetix({ network: Networks.Mainnet });
+		console.log(mainnetSnxjs.stakingRewards);
+		expect(mainnetSnxjs.stakingRewards[0].name).toBeTruthy();
+	});
+
+	test('should have the right number of versions', () => {
+		expect(Object.keys(snxjs.versions).length).toBe(numVersions);
+	});
+
+	test('should have the right suspension reasons', () => {
+		expect(snxjs.suspensionReasons[1]).toEqual(suspensionReason);
+	});
+
+	test('should not have the wrong suspension reasons', () => {
+		expect(snxjs.suspensionReasons[10000]).toBe(undefined);
 	});
 
 	test('toBytes32 is working properly', () => {

@@ -14,15 +14,40 @@ export enum NetworkIds {
 	Kovan = 42,
 }
 
+type ContractInfo = {
+	address: string;
+	replaced_in: string;
+	status: string;
+};
+
+type Version = {
+	commit: string;
+	contracts: { [name: string]: ContractInfo };
+	date: string;
+	fulltag: string;
+	network: string;
+	release: string;
+	tag: string;
+};
+
+type StakingReward = {
+	name: string;
+	rewardsToken: string;
+	stakingToken: string;
+};
+
 export type SynthetixJS = {
 	currentNetwork: Networks;
 	supportedNetworks: SupportedNetworks;
 	sources: { [name: string]: SourceData };
 	targets: TargetsRecord;
 	synths: Synth[];
+	versions: { [version: string]: Version };
+	stakingRewards: Array<StakingReward>;
+	suspensionReasons: { [code: number]: string };
 	users: User[];
 	toBytes32: (key: string) => string;
-	ethers: typeof ethers;
+	utils: typeof ethers.utils;
 };
 
 export type SupportedNetworks = Record<NetworkIds, Networks>;

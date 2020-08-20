@@ -15,7 +15,7 @@
 				const snxjs = synthetix({ network: 'mainnet' });
 				console.log('snxjs', snxjs);
 
-				const { formatEther } = snxjs.ethers.utils;
+				const { formatEther } = snxjs.utils;
 
 				const synths = snxjs.synths.map(({ name }) => name);
 				const fromBlock = 10260987;

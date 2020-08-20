@@ -5,7 +5,7 @@ const { synthetix } = require('../src/index.ts');
 	// this instance exposes props for the given network: synths, sources, targets, users, as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.
 	const snxjs = synthetix({ network: 'mainnet' });
 
-	const { formatEther } = snxjs.ethers.utils;
+	const { formatEther } = snxjs.utils;
 
 	const synths = snxjs.synths.map(({ name }) => name);
 	const fromBlock = 10260987;

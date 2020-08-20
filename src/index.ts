@@ -1,4 +1,13 @@
-import { getSource, getTarget, getSynths, getUsers, toBytes32 } from 'synthetix';
+import {
+	getSource,
+	getTarget,
+	getSynths,
+	getUsers,
+	toBytes32,
+	getVersions,
+	getSuspensionReasons,
+	getStakingRewards,
+} from 'synthetix';
 import { ethers } from 'ethers';
 
 import {
@@ -23,8 +32,11 @@ const synthetix = ({ networkId, network, signer, provider }: Config) => {
 		targets: getTarget({ network: currentNetwork }),
 		synths: getSynths({ network: currentNetwork }),
 		users: getUsers({ network: currentNetwork }),
+		versions: getVersions({ network: currentNetwork }),
+		stakingRewards: getStakingRewards({ network: currentNetwork }),
+		suspensionReasons: getSuspensionReasons(),
 		toBytes32,
-		ethers,
+		utils: ethers.utils,
 	};
 	const contracts: ContractsMap = getSynthetixContracts(currentNetwork, signer, provider);
 	return {

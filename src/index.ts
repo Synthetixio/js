@@ -72,13 +72,25 @@ const getSynthetixContracts = (
 
 	const contracts: ContractsMap = {};
 
-	Object.values(targets).forEach(({ name, source, address }: Target) => {
-		contracts[name] = new ethers.Contract(
-			address,
-			sources[source].abi,
-			signer || provider || ethers.getDefaultProvider(network)
-		);
-	});
+	Object.values(targets)
+		.map((target: Target) => {
+			if (target.name === 'Synthetix') {
+				target.address = targets.ProxyERC20.address;
+			} else if (target.name === 'SynthsUSD') {
+				target.address = targets.ProxyERC20sUSD.address;
+			} else if (target.name.startsWith('Synths') || target.name.startsWith('Synthi')) {
+				const newTarget = target.name.replace('Synth', 'Proxy');
+				target.address = targets[newTarget].address;
+			}
+			return target;
+		})
+		.forEach(({ name, source, address }: Target) => {
+			contracts[name] = new ethers.Contract(
+				address,
+				sources[source].abi,
+				signer || provider || ethers.getDefaultProvider(network)
+			);
+		});
 
 	return contracts;
 };

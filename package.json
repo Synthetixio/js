@@ -11,7 +11,7 @@
 		"build-node": "tsc -p tsconfig.node.json",
 		"build-browser": "webpack --mode=production --max-old-space-size=4096",
 		"examples:node": "ts-node --project tsconfig.node.json ./examples/node-example.js",
-		"examples:browser": "npm run build-browser && http-server -o ./examples/browser-example.html",
+		"examples:browser": "npm run build-browser && http-server -o ./examples/browser-example.html -c-1",
 		"lint": "eslint './src/**/*.{js,ts,tsx}' && tsc",
 		"lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}'",
 		"test": "jest --forceExit --coverage --no-cache",
@@ -65,7 +65,7 @@
 	"jest": {
 		"coverageThreshold": {
 			"global": {
-				"branches": 70,
+				"branches": 80,
 				"functions": 80,
 				"lines": 80,
 				"statements": 80

@@ -1,19 +1,7 @@
 {
+	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
-		"allowJs": true,
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"strict": true,
 		"declaration": true,
-		"declarationDir": "./build",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"module": "esnext",
-		"outDir": "./build",
-		"target": "es6",
-		"skipLibCheck": true,
-		"isolatedModules": true,
-		"baseUrl": "src"
-	},
-	"include": ["src"]
+		"declarationDir": "./build"
+	}
 }

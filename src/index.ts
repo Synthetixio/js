@@ -70,29 +70,28 @@ const getSynthetixContracts = (
 	const sources = getSource({ network });
 	const targets: TargetsRecord = getTarget({ network });
 
-	const contracts: ContractsMap = {};
-
-	Object.values(targets)
+	return Object.values(targets)
 		.map((target: Target) => {
 			if (target.name === 'Synthetix') {
 				target.address = targets.ProxyERC20.address;
 			} else if (target.name === 'SynthsUSD') {
 				target.address = targets.ProxyERC20sUSD.address;
-			} else if (target.name.startsWith('Synths') || target.name.startsWith('Synthi')) {
+			} else if (target.name === 'FeePool') {
+				target.address = targets.ProxyFeePool.address;
+			} else if (target.name.match(/Synth(s|i)[a-zA-Z]+$/)) {
 				const newTarget = target.name.replace('Synth', 'Proxy');
 				target.address = targets[newTarget].address;
 			}
 			return target;
 		})
-		.forEach(({ name, source, address }: Target) => {
-			contracts[name] = new ethers.Contract(
+		.reduce((acc: ContractsMap, { name, source, address }: Target) => {
+			acc[name] = new ethers.Contract(
 				address,
 				sources[source].abi,
 				signer || provider || ethers.getDefaultProvider(network)
 			);
-		});
-
-	return contracts;
+			return acc;
+		}, {});
 };
 
 export { synthetix, Networks, NetworkIds, SUPPORTED_NETWORKS };

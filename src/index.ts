@@ -23,9 +23,9 @@ import {
 import { SUPPORTED_NETWORKS, ERRORS } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const synthetix = ({ networkId, network, signer, provider }: Config) => {
+const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJS => {
 	const currentNetwork = selectNetwork(networkId, network);
-	const synthetixData: SynthetixJS = {
+	return {
 		currentNetwork,
 		supportedNetworks,
 		sources: getSource({ network: currentNetwork }),
@@ -37,11 +37,7 @@ const synthetix = ({ networkId, network, signer, provider }: Config) => {
 		suspensionReasons: getSuspensionReasons(),
 		toBytes32,
 		utils: ethers.utils,
-	};
-	const contracts: ContractsMap = getSynthetixContracts(currentNetwork, signer, provider);
-	return {
-		...contracts,
-		...synthetixData,
+		contracts: getSynthetixContracts(currentNetwork, signer, provider),
 	};
 };
 

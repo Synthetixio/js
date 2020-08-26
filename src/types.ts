@@ -48,6 +48,7 @@ export type SynthetixJS = {
 	users: User[];
 	toBytes32: (key: string) => string;
 	utils: typeof ethers.utils;
+	contracts: ContractsMap;
 };
 
 export type SupportedNetworks = Record<NetworkIds, Networks>;

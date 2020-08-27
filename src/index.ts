@@ -7,27 +7,37 @@ import {
 	getVersions,
 	getSuspensionReasons,
 	getStakingRewards,
+	networks,
+	networkToChainId,
+	getTokens,
+	decode,
+	defaults,
+	getFeeds,
 } from 'synthetix';
 import { ethers } from 'ethers';
 
 import {
 	Config,
-	Networks,
-	NetworkIds,
+	Network,
+	NetworkId,
 	Target,
 	TargetsRecord,
 	ContractsMap,
 	SynthetixJS,
-	SupportedNetworks,
 } from './types';
-import { SUPPORTED_NETWORKS, ERRORS } from './constants';
+import { ERRORS } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJS => {
 	const currentNetwork = selectNetwork(networkId, network);
 	return {
 		currentNetwork,
-		supportedNetworks,
+		networks,
+		networkToChainId,
+		decode,
+		defaults,
+		feeds: getFeeds({ network: currentNetwork }),
+		tokens: getTokens({ network: currentNetwork }),
 		sources: getSource({ network: currentNetwork }),
 		targets: getTarget({ network: currentNetwork }),
 		synths: getSynths({ network: currentNetwork }),
@@ -41,25 +51,27 @@ const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJ
 	};
 };
 
-const supportedNetworks: SupportedNetworks = SUPPORTED_NETWORKS;
-
-const selectNetwork = (networkId?: NetworkIds, network?: Networks): Networks => {
-	let currentNetwork: Networks = Networks.Mainnet;
+const selectNetwork = (networkId?: NetworkId, network?: Network): Network => {
+	let currentNetwork: Network = Network.Mainnet;
 	if (
-		(network && !Object.values(Networks).includes(network)) ||
-		(networkId && !supportedNetworks[networkId])
+		(network && !networks.includes(network)) ||
+		(networkId && !Object.values(networkToChainId).includes(networkId))
 	) {
 		throw new Error(ERRORS.badNetworkArg);
-	} else if (network && Object.values(Networks).includes(network)) {
+	} else if (network && networks.includes(network)) {
 		currentNetwork = network;
 	} else if (networkId) {
-		currentNetwork = supportedNetworks[networkId];
+		Object.entries(networkToChainId).forEach(([key, value]) => {
+			if (value === networkId) {
+				currentNetwork = key as Network;
+			}
+		});
 	}
 	return currentNetwork;
 };
 
 const getSynthetixContracts = (
-	network: Networks,
+	network: Network,
 	signer?: ethers.Signer,
 	provider?: ethers.providers.Provider
 ): ContractsMap => {
@@ -90,6 +102,6 @@ const getSynthetixContracts = (
 		}, {});
 };
 
-export { synthetix, Networks, NetworkIds, SUPPORTED_NETWORKS };
-export type { Config, Target, TargetsRecord, ContractsMap, SynthetixJS, SupportedNetworks };
+export { synthetix, Network, NetworkId };
+export type { Config, Target, TargetsRecord, ContractsMap, SynthetixJS };
 export default synthetix;

@@ -6,6 +6,10 @@
 	"browser": "./build/index.js",
 	"types": "./build/src/index.d.ts",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Synthetixio/js"
+	},
 	"scripts": {
 		"build": "npm run build-browser && npm run build-node",
 		"build-node": "tsc -p tsconfig.node.json",
@@ -48,7 +52,7 @@
 	"dependencies": {
 		"ethers": "5.0.7",
 		"lodash": "4.17.19",
-		"synthetix": "2.26.3",
+		"synthetix": "2.27.1-alpha",
 		"web3-utils": "1.2.11"
 	},
 	"husky": {
@@ -65,7 +69,7 @@
 	"jest": {
 		"coverageThreshold": {
 			"global": {
-				"branches": 80,
+				"branches": 70,
 				"functions": 80,
 				"lines": 80,
 				"statements": 80

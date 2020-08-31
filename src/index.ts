@@ -7,27 +7,37 @@ import {
 	getVersions,
 	getSuspensionReasons,
 	getStakingRewards,
+	networks,
+	networkToChainId,
+	getTokens,
+	decode,
+	defaults,
+	getFeeds,
 } from 'synthetix';
 import { ethers } from 'ethers';
 
 import {
 	Config,
-	Networks,
-	NetworkIds,
+	Network,
+	NetworkId,
 	Target,
 	TargetsRecord,
 	ContractsMap,
 	SynthetixJS,
-	SupportedNetworks,
 } from './types';
-import { SUPPORTED_NETWORKS, ERRORS } from './constants';
+import { ERRORS } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const synthetix = ({ networkId, network, signer, provider }: Config) => {
+const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJS => {
 	const currentNetwork = selectNetwork(networkId, network);
-	const synthetixData: SynthetixJS = {
+	return {
 		currentNetwork,
-		supportedNetworks,
+		networks,
+		networkToChainId,
+		decode,
+		defaults,
+		feeds: getFeeds({ network: currentNetwork }),
+		tokens: getTokens({ network: currentNetwork }),
 		sources: getSource({ network: currentNetwork }),
 		targets: getTarget({ network: currentNetwork }),
 		synths: getSynths({ network: currentNetwork }),
@@ -37,52 +47,61 @@ const synthetix = ({ networkId, network, signer, provider }: Config) => {
 		suspensionReasons: getSuspensionReasons(),
 		toBytes32,
 		utils: ethers.utils,
-	};
-	const contracts: ContractsMap = getSynthetixContracts(currentNetwork, signer, provider);
-	return {
-		...contracts,
-		...synthetixData,
+		contracts: getSynthetixContracts(currentNetwork, signer, provider),
 	};
 };
 
-const supportedNetworks: SupportedNetworks = SUPPORTED_NETWORKS;
-
-const selectNetwork = (networkId?: NetworkIds, network?: Networks): Networks => {
-	let currentNetwork: Networks = Networks.Mainnet;
+const selectNetwork = (networkId?: NetworkId, network?: Network): Network => {
+	let currentNetwork: Network = Network.Mainnet;
 	if (
-		(network && !Object.values(Networks).includes(network)) ||
-		(networkId && !supportedNetworks[networkId])
+		(network && !networks.includes(network)) ||
+		(networkId && !Object.values(networkToChainId).includes(networkId))
 	) {
 		throw new Error(ERRORS.badNetworkArg);
-	} else if (network && Object.values(Networks).includes(network)) {
+	} else if (network && networks.includes(network)) {
 		currentNetwork = network;
 	} else if (networkId) {
-		currentNetwork = supportedNetworks[networkId];
+		Object.entries(networkToChainId).forEach(([key, value]) => {
+			if (value === networkId) {
+				currentNetwork = key as Network;
+			}
+		});
 	}
 	return currentNetwork;
 };
 
 const getSynthetixContracts = (
-	network: Networks,
+	network: Network,
 	signer?: ethers.Signer,
 	provider?: ethers.providers.Provider
 ): ContractsMap => {
 	const sources = getSource({ network });
 	const targets: TargetsRecord = getTarget({ network });
 
-	const contracts: ContractsMap = {};
-
-	Object.values(targets).forEach(({ name, source, address }: Target) => {
-		contracts[name] = new ethers.Contract(
-			address,
-			sources[source].abi,
-			signer || provider || ethers.getDefaultProvider(network)
-		);
-	});
-
-	return contracts;
+	return Object.values(targets)
+		.map((target: Target) => {
+			if (target.name === 'Synthetix') {
+				target.address = targets.ProxyERC20.address;
+			} else if (target.name === 'SynthsUSD') {
+				target.address = targets.ProxyERC20sUSD.address;
+			} else if (target.name === 'FeePool') {
+				target.address = targets.ProxyFeePool.address;
+			} else if (target.name.match(/Synth(s|i)[a-zA-Z]+$/)) {
+				const newTarget = target.name.replace('Synth', 'Proxy');
+				target.address = targets[newTarget].address;
+			}
+			return target;
+		})
+		.reduce((acc: ContractsMap, { name, source, address }: Target) => {
+			acc[name] = new ethers.Contract(
+				address,
+				sources[source].abi,
+				signer || provider || ethers.getDefaultProvider(network)
+			);
+			return acc;
+		}, {});
 };
 
-export { synthetix, Networks, NetworkIds };
-export type { Config, Target, TargetsRecord, ContractsMap, SynthetixJS, SupportedNetworks };
+export { synthetix, Network, NetworkId };
+export type { Config, Target, TargetsRecord, ContractsMap, SynthetixJS };
 export default synthetix;

@@ -11,16 +11,18 @@ import {
 	snxBytes,
 	suspensionReason,
 	numVersions,
+	waitingPeriodSecs,
+	tokensLength,
 } from './constants';
 import synthetix from '../src';
-import { Networks, NetworkIds } from '../src/types';
+import { Network, NetworkId } from '../src/types';
 import { ERRORS } from '../src/constants';
 
 describe('@synthetixio/js tests', () => {
 	let snxjs;
 
 	beforeAll(() => {
-		snxjs = synthetix({ network: Networks.Kovan });
+		snxjs = synthetix({ network: Network.Kovan });
 	});
 
 	test('should return the right number of contracts', () => {
@@ -32,13 +34,13 @@ describe('@synthetixio/js tests', () => {
 	});
 
 	test('should include the supported networks', () => {
-		expect(snxjs.supportedNetworks[NetworkIds.Mainnet]).toBe(Networks.Mainnet);
-		expect(snxjs.supportedNetworks[NetworkIds.Kovan]).toBe(Networks.Kovan);
-		expect(snxjs.supportedNetworks[NetworkIds.Rinkeby]).not.toBe(Networks.Ropsten);
+		expect(snxjs.networkToChainId[Network.Mainnet]).toBe(NetworkId.Mainnet);
+		expect(snxjs.networkToChainId[Network.Kovan]).toBe(NetworkId.Kovan);
+		expect(snxjs.networkToChainId[Network.Rinkeby]).not.toBe(NetworkId.Ropsten);
 	});
 
 	test('should include the current network', () => {
-		expect(snxjs.currentNetwork).toBe(Networks.Kovan);
+		expect(snxjs.currentNetwork).toBe(Network.Kovan);
 	});
 
 	test('should return the right number of users', () => {
@@ -46,12 +48,12 @@ describe('@synthetixio/js tests', () => {
 	});
 
 	test('should return valid contracts', () => {
-		const validContract = snxjs[validContractName];
+		const validContract = snxjs.contracts[validContractName];
 		expect(validContract).not.toBe(undefined);
 	});
 
 	test('should not return an invalid contract', () => {
-		const invalidContract = snxjs[badContractName];
+		const invalidContract = snxjs.contracts[badContractName];
 		expect(invalidContract).toBe(undefined);
 	});
 
@@ -78,7 +80,7 @@ describe('@synthetixio/js tests', () => {
 
 	test('should have a list of staking rewards', () => {
 		expect(snxjs.stakingRewards.length).toEqual(0);
-		const mainnetSnxjs = synthetix({ network: Networks.Mainnet });
+		const mainnetSnxjs = synthetix({ network: Network.Mainnet });
 		console.log(mainnetSnxjs.stakingRewards);
 		expect(mainnetSnxjs.stakingRewards[0].name).toBeTruthy();
 	});
@@ -97,6 +99,25 @@ describe('@synthetixio/js tests', () => {
 
 	test('toBytes32 is working properly', () => {
 		expect(snxjs.toBytes32('SNX')).toBe(snxBytes);
+	});
+
+	test('the right defaults are available', () => {
+		expect(snxjs.defaults.WAITING_PERIOD_SECS).toBe(waitingPeriodSecs);
+		expect(snxjs.defaults.RANDOM_NAME).toBe(undefined);
+	});
+
+	test('the correct tokens are returned', () => {
+		expect(Object.keys(snxjs.tokens).length).toBe(tokensLength);
+	});
+
+	test('the right feeds are returned', () => {
+		expect(snxjs.feeds.SNX.asset).toBe('SNX');
+		expect(snxjs.feeds.SOMETHING).toBe(undefined);
+	});
+
+	test('the decode method is defined', () => {
+		expect(snxjs.decode).toBeTruthy();
+		expect(typeof snxjs.decode).toBe('function');
 	});
 
 	test('should throw error with wrong network', () => {

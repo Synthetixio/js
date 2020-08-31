@@ -31,10 +31,30 @@ const snxjs = synthetix({ network: 'mainnet' });
 
 
 // Note for typescript applications:
-import { synthetix, Networks } from '@synthetixio/js';
-const snxjs = synthetix({ network: Networks.Mainnet });
+import { synthetix, Network } from '@synthetixio/js';
+const snxjs = synthetix({ network: Network.Mainnet });
 ```
 
 #### Usage
 
-See the examples folder for usage details
+```
+// this instance exposes props for the given network: synths, sources, targets, users, etc... as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.
+const snxjs = synthetix({ network: 'mainnet' });
+
+// If you want to interact with a contract, simply follow the convention:
+// await snxjs[contractName].methodName(arguments)
+// many arguments require being formatted toBytes32, which we also provide with the library
+// Note can optionally pass in a { blockTag: someBlockNumber } to get data from a specific block instead of {}
+E.g:
+const unformattedSnxPrice = await snxjs.contracts.ExchangeRates.rateForCurrency(snxjs.toBytes32('SNX'), {});
+const unformattedTotalSupply = await snxjs.contracts.SynthsUSD.totalSupply({});
+
+// We also expose ethers utils which provides handy methods for formatting responses to queries.
+const { formatEther } = snxjs.utils;
+
+const snxPrice = formatEther(unformattedSnxPrice);
+const totalSupply = formatEther(unformattedTotalSupply);
+
+```
+
+See the examples folder for more usage details

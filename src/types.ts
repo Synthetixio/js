@@ -1,13 +1,13 @@
 import { ethers } from 'ethers';
 
-export enum Networks {
+export enum Network {
 	Mainnet = 'mainnet',
 	Ropsten = 'ropsten',
 	Rinkeby = 'rinkeby',
 	Kovan = 'kovan',
 }
 
-export enum NetworkIds {
+export enum NetworkId {
 	Mainnet = 1,
 	Ropsten = 3,
 	Rinkeby = 4,
@@ -36,9 +36,50 @@ type StakingReward = {
 	stakingToken: string;
 };
 
+type Token = {
+	address: string;
+	asset?: string;
+	decimals: number;
+	feed?: string;
+	index?: Array<{
+		asset: string;
+		category: string;
+		description: string;
+		sign: string;
+		units: number;
+		weight: number;
+	}>;
+	inverted?: {
+		entryPoint: number;
+		lowerLimit: number;
+		upperLimit: number;
+	};
+	name: string;
+	symbol: string;
+};
+
+type Feed = {
+	asset: string;
+	category: string;
+	desc?: string;
+	description?: string;
+	exchange?: string;
+	feed?: string;
+	sign: string;
+};
+
 export type SynthetixJS = {
-	currentNetwork: Networks;
-	supportedNetworks: SupportedNetworks;
+	networks: Array<Network>;
+	networkToChainId: Record<Network, NetworkId>;
+	decode: (config: {
+		network: Network;
+		data: string;
+		target: Target;
+	}) => { method: { name: string; params: Array<any> }; contract: string };
+	defaults: { [key: string]: any };
+	feeds: { [symbol: string]: Feed };
+	tokens: Array<Token>;
+	currentNetwork: Network;
 	sources: { [name: string]: SourceData };
 	targets: TargetsRecord;
 	synths: Synth[];
@@ -48,9 +89,8 @@ export type SynthetixJS = {
 	users: User[];
 	toBytes32: (key: string) => string;
 	utils: typeof ethers.utils;
+	contracts: ContractsMap;
 };
-
-export type SupportedNetworks = Record<NetworkIds, Networks>;
 
 export type SourceData = {
 	bytecode: string;
@@ -64,7 +104,7 @@ export type Target = {
 	link: string;
 	timestamp: string;
 	txn: string;
-	network: Networks;
+	network: Network;
 };
 
 export type TargetsRecord = Record<string, Target>;
@@ -80,8 +120,8 @@ export type ContractsMap = {
 };
 
 export type Config = {
-	networkId?: NetworkIds;
-	network?: Networks;
+	networkId?: NetworkId;
+	network?: Network;
 	signer?: ethers.Signer;
 	provider?: ethers.providers.Provider;
 };

@@ -1,5 +1,5 @@
-export const numSynthetixContracts = 156;
-export const numVersions = 86;
+export const numSynthetixContracts = 159;
+export const numVersions = 88;
 export const numUsers = 6;
 export const validContractName = 'FeePool';
 export const badContractName = 'RandomContract';
@@ -7,3 +7,5 @@ export const validSynthName = 'sETH';
 export const badSynthName = 'mETH';
 export const snxBytes = '0x534e580000000000000000000000000000000000000000000000000000000000';
 export const suspensionReason = 'System Upgrade';
+export const waitingPeriodSecs = '180';
+export const tokensLength = 41;

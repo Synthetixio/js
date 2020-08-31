@@ -13,34 +13,34 @@ const { synthetix } = require('../src/index.ts');
 
 	let totalInUSD = 0;
 
-	const unformattedSnxPrice = await snxjs.ExchangeRates.rateForCurrency(
+	const unformattedSnxPrice = await snxjs.contracts.ExchangeRates.rateForCurrency(
 		snxjs.toBytes32('SNX'),
 		blockOptions
 	); // note blockOptions must be passed to `ethers.Contract` as the final parameter (and fails if no archive node)
 	const snxPrice = formatEther(unformattedSnxPrice);
 	console.log('snxPrice', snxPrice);
+	synths.map(async (synth, index) => {
+		const totalAmount = await snxjs.contracts[`Synth${synth}`].totalSupply(blockOptions);
 
-	let results = await Promise.all(
-		synths.map(async (synth) => {
-			const totalAmount = await snxjs[`Synth${synth}`].totalSupply(blockOptions);
+		const totalSupply = formatEther(totalAmount);
+		console.log('synth', synth);
+		console.log('totalSupply', totalSupply);
+		const rateForSynth = formatEther(
+			await snxjs.contracts.ExchangeRates.rateForCurrency(snxjs.toBytes32(synth), blockOptions)
+		);
+		const totalSupplyInUSD = rateForSynth * totalSupply;
+		totalInUSD += totalSupplyInUSD;
+		if (index === synths.length - 1) {
+			console.log('totalInUSD', totalInUSD);
+		}
 
-			const totalSupply = formatEther(totalAmount);
-			const rateForSynth = formatEther(
-				await snxjs.ExchangeRates.rateForCurrency(snxjs.toBytes32(synth), blockOptions)
-			);
-			const totalSupplyInUSD = rateForSynth * totalSupply;
-			totalInUSD += totalSupplyInUSD;
-			const rateIsFrozen = await snxjs.ExchangeRates.rateIsFrozen(
-				snxjs.toBytes32(synth),
-				blockOptions
-			);
+		const rateIsFrozen = await snxjs.contracts.ExchangeRates.rateIsFrozen(
+			snxjs.toBytes32(synth),
+			blockOptions
+		);
 
-			return { synth, totalAmount, totalSupply, rateForSynth, totalSupplyInUSD, rateIsFrozen };
-		})
-	);
-
-	console.log('totalInUSD', totalInUSD);
-	console.log('results', results);
+		return { synth, totalAmount, totalSupply, rateForSynth, totalSupplyInUSD, rateIsFrozen };
+	});
 })().catch((e) => {
 	console.log('error', e);
 });

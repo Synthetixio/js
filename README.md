@@ -2,6 +2,8 @@
 
 [![Synthetixio](https://circleci.com/gh/Synthetixio/js.svg?style=svg)](https://github.com/Synthetixio/js)
 
+:warning: This library is still under construction and in BETA, please use with caution.
+
 ### The official Javascript library for interacting with Synthetix protocol contracts.
 
 This library can be used in 2 different environments:

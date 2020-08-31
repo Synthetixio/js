@@ -1,5 +1,5 @@
-export const numSynthetixContracts = 158;
-export const numVersions = 87;
+export const numSynthetixContracts = 159;
+export const numVersions = 88;
 export const numUsers = 6;
 export const validContractName = 'FeePool';
 export const badContractName = 'RandomContract';

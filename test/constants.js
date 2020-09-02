@@ -7,5 +7,5 @@ export const validSynthName = 'sETH';
 export const badSynthName = 'mETH';
 export const snxBytes = '0x534e580000000000000000000000000000000000000000000000000000000000';
 export const suspensionReason = 'System Upgrade';
-export const waitingPeriodSecs = '180';
+export const waitingPeriodSecs = '300';
 export const tokensLength = 41;

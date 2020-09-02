@@ -29,9 +29,12 @@ import { ERRORS } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJS => {
-	const currentNetwork = selectNetwork(networkId, network);
+	const [currentNetwork, currentNetworkId] = selectNetwork(networkId, network);
 	return {
-		currentNetwork,
+		network: {
+			id: currentNetworkId,
+			name: currentNetwork,
+		},
 		networks,
 		networkToChainId,
 		decode,
@@ -51,8 +54,9 @@ const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJ
 	};
 };
 
-const selectNetwork = (networkId?: NetworkId, network?: Network): Network => {
+const selectNetwork = (networkId?: NetworkId, network?: Network): [Network, NetworkId] => {
 	let currentNetwork: Network = Network.Mainnet;
+	let currentNetworkId: NetworkId = NetworkId.Mainnet;
 	if (
 		(network && !networks.includes(network)) ||
 		(networkId && !Object.values(networkToChainId).includes(networkId))
@@ -60,14 +64,16 @@ const selectNetwork = (networkId?: NetworkId, network?: Network): Network => {
 		throw new Error(ERRORS.badNetworkArg);
 	} else if (network && networks.includes(network)) {
 		currentNetwork = network;
+		currentNetworkId = networkToChainId[network];
 	} else if (networkId) {
 		Object.entries(networkToChainId).forEach(([key, value]) => {
 			if (value === networkId) {
 				currentNetwork = key as Network;
+				currentNetworkId = value as NetworkId;
 			}
 		});
 	}
-	return currentNetwork;
+	return [currentNetwork, currentNetworkId];
 };
 
 const getSynthetixContracts = (

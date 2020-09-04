@@ -24,6 +24,8 @@ import {
 	TargetsRecord,
 	ContractsMap,
 	SynthetixJS,
+	Synth,
+	Token,
 } from './types';
 import { ERRORS } from './constants';
 
@@ -109,5 +111,5 @@ const getSynthetixContracts = (
 };
 
 export { synthetix, Network, NetworkId };
-export type { Config, Target, TargetsRecord, ContractsMap, SynthetixJS };
+export type { Config, Target, TargetsRecord, ContractsMap, SynthetixJS, Synth, Token };
 export default synthetix;

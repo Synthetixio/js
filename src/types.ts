@@ -36,7 +36,7 @@ type StakingReward = {
 	stakingToken: string;
 };
 
-type Token = {
+export type Token = {
 	address: string;
 	asset?: string;
 	decimals: number;

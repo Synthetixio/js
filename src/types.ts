@@ -36,7 +36,7 @@ type StakingReward = {
 	stakingToken: string;
 };
 
-type Token = {
+export type Token = {
 	address: string;
 	asset?: string;
 	decimals: number;
@@ -79,7 +79,10 @@ export type SynthetixJS = {
 	defaults: { [key: string]: any };
 	feeds: { [symbol: string]: Feed };
 	tokens: Array<Token>;
-	currentNetwork: Network;
+	network: {
+		id: NetworkId;
+		name: Network;
+	};
 	sources: { [name: string]: SourceData };
 	targets: TargetsRecord;
 	synths: Synth[];

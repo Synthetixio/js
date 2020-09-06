@@ -40,7 +40,8 @@ describe('@synthetixio/js tests', () => {
 	});
 
 	test('should include the current network', () => {
-		expect(snxjs.currentNetwork).toBe(Network.Kovan);
+		expect(snxjs.network.name).toBe(Network.Kovan);
+		expect(snxjs.network.id).toBe(NetworkId.Kovan);
 	});
 
 	test('should return the right number of users', () => {

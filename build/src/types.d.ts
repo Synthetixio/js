@@ -56,7 +56,6 @@ export declare type Token = {
 declare type Feed = {
     asset: string;
     category: string;
-    desc?: string;
     description?: string;
     exchange?: string;
     feed?: string;
@@ -137,7 +136,7 @@ export declare type Synth = {
     asset: string;
     category: string;
     sign: string;
-    desc: string;
+    description: string;
     aggregator?: string;
     subclass?: string;
 };

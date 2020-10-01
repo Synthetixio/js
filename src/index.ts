@@ -32,6 +32,8 @@ import { ERRORS } from './constants';
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJS => {
 	const [currentNetwork, currentNetworkId] = selectNetwork(networkId, network);
+	const contracts = getSynthetixContracts(currentNetwork, signer, provider);
+	const contractsCopy = { ...contracts };
 	return {
 		network: {
 			id: currentNetworkId,
@@ -52,7 +54,8 @@ const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJ
 		suspensionReasons: getSuspensionReasons(),
 		toBytes32,
 		utils: ethers.utils,
-		contracts: getSynthetixContracts(currentNetwork, signer, provider),
+		contracts,
+		contractsAtBlock: (block: number) => memoizedBlockContracts(block, contractsCopy),
 	};
 };
 
@@ -108,6 +111,55 @@ const getSynthetixContracts = (
 			);
 			return acc;
 		}, {});
+};
+
+const memoizedBlockContracts = (block: number, contractsCopy: ContractsMap): ContractsMap => {
+	return Object.entries(contractsCopy).reduce(
+		(acc: ContractsMap, [contractName, contractInstance]: [string, ethers.Contract]) => {
+			acc[contractName] = memoizedEthersContract(block, contractInstance);
+			return acc;
+		},
+		{}
+	);
+};
+
+const memoizedEthersContract = (
+	block: number,
+	contractInstance: ethers.Contract
+): ethers.Contract => {
+	const returnObj = Object.entries(contractInstance).reduce(
+		(acc: ethers.Contract, [contractKey, contractItem]: [string, any]) => {
+			let newContractFunction = null;
+			if (typeof contractItem === 'function') {
+				newContractFunction = updateEthersMethodWithBlock(contractItem, block);
+			}
+			if (contractKey != 'functions') {
+				// @ts-ignore
+				acc[contractKey] = newContractFunction || contractItem;
+			} else {
+				// @ts-ignore
+				acc[contractKey] = Object.entries(contractItem).reduce(
+					// @ts-ignore
+					(acc: Object, [fnName, fn]: [string, Function]) => {
+						// @ts-ignore
+						acc[fnName] = updateEthersMethodWithBlock(fn, block);
+						return acc;
+					},
+					{}
+				);
+			}
+			return acc;
+		},
+		{} as ethers.Contract
+	);
+	console.log('returnObj????', returnObj);
+	return returnObj;
+};
+
+const updateEthersMethodWithBlock = (contractFunction: Function, block: number): Function => {
+	return (...args: any[]) => {
+		contractFunction(...args, { blockTag: block });
+	};
 };
 
 export { synthetix, Network, NetworkId };

@@ -92,6 +92,7 @@ export type SynthetixJS = {
 	toBytes32: (key: string) => string;
 	utils: typeof ethers.utils;
 	contracts: ContractsMap;
+	contractsAtBlock: (block: number) => ContractsMap;
 };
 
 export type SourceData = {

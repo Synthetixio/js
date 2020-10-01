@@ -17,6 +17,7 @@
 		"build-report": "webpack-bundle-analyzer --port 4200 ./build/stats.json",
 		"examples:node": "ts-node --project tsconfig.node.json ./examples/node-example.js",
 		"examples:browser": "npm run build-browser && http-server -o ./examples/browser-example.html -c-1",
+		"examples:browser-older-blocks": "npm run build-browser && http-server -o ./examples/browser-older-blocks-example.html -c-1",
 		"lint": "eslint './src/**/*.{js,ts,tsx}' && tsc",
 		"lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}'",
 		"test": "jest --forceExit --coverage --no-cache",

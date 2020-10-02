@@ -26,6 +26,7 @@ import {
 	SynthetixJS,
 	Synth,
 	Token,
+	FunctionUnknown,
 } from './types';
 import { ERRORS } from './constants';
 
@@ -128,10 +129,10 @@ const memoizedEthersContract = (
 	contractInstance: ethers.Contract
 ): ethers.Contract => {
 	const returnObj = Object.entries(contractInstance).reduce(
-		(acc: ethers.Contract, [contractKey, contractItem]: [string, any]) => {
+		(acc: ethers.Contract, [contractKey, contractItem]: [string, unknown | FunctionUnknown]) => {
 			let newContractFunction = null;
 			if (typeof contractItem === 'function') {
-				newContractFunction = updateEthersMethodWithBlock(contractItem, block);
+				newContractFunction = updateEthersMethodWithBlock(contractItem as FunctionUnknown, block);
 			}
 			if (contractKey != 'functions') {
 				// @ts-ignore
@@ -140,7 +141,7 @@ const memoizedEthersContract = (
 				// @ts-ignore
 				acc[contractKey] = Object.entries(contractItem).reduce(
 					// @ts-ignore
-					(acc: Object, [fnName, fn]: [string, Function]) => {
+					(acc: Record<string, unknown>, [fnName, fn]: [string, FunctionUnknown]) => {
 						// @ts-ignore
 						acc[fnName] = updateEthersMethodWithBlock(fn, block);
 						return acc;
@@ -152,13 +153,13 @@ const memoizedEthersContract = (
 		},
 		{} as ethers.Contract
 	);
-	console.log('returnObj????', returnObj);
 	return returnObj;
 };
 
-const updateEthersMethodWithBlock = (contractFunction: Function, block: number): Function => {
-	return (...args: any[]) => {
-		contractFunction(...args, { blockTag: block });
+const updateEthersMethodWithBlock = (contractFunction: FunctionUnknown, block: number): unknown => {
+	return (...args: unknown[]) => {
+		const newArgs = args.concat({ blockTag: block });
+		return contractFunction(...newArgs);
 	};
 };
 

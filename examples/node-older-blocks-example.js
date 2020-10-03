@@ -12,7 +12,7 @@ const { ethers } = require('ethers');
 		snxjs = synthetix({ network: 'mainnet' });
 	}
 	const { formatEther } = snxjs.utils;
-	const fromBlock = 10290987;
+	const fromBlock = 10929392;
 
 	// method 1: using contractsAtBlock
 	// NOTE: instead of using block options like we did in browser-example.html and node-example.js,

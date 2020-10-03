@@ -16,7 +16,7 @@ const { ethers } = require('ethers');
 	const { formatEther } = snxjs.utils;
 
 	const synths = snxjs.synths.map(({ name }) => name);
-	const fromBlock = 10260987;
+	const fromBlock = 10929392;
 	const blockOptions = fromBlock ? { blockTag: Number(fromBlock) } : {};
 
 	let totalInUSD = 0;

@@ -20,6 +20,7 @@ import { ERRORS } from '../src/constants';
 
 describe('@synthetixio/js tests', () => {
 	let snxjs;
+	const fromBlock = 10929392;
 
 	beforeAll(() => {
 		snxjs = synthetix({ network: Network.Kovan });
@@ -58,6 +59,19 @@ describe('@synthetixio/js tests', () => {
 		expect(invalidContract).toBe(undefined);
 	});
 
+	test('should return valid older contracts at a block', () => {
+		const olderContracts = snxjs.contractsAtBlock(fromBlock);
+		const validContract = olderContracts[validContractName];
+		expect(validContract).not.toBe(undefined);
+		expect(validContract.claimFees).not.toBe(undefined);
+	});
+
+	test('should not return invalid older contracts at a block', () => {
+		const olderContracts = snxjs.contractsAtBlock(fromBlock);
+		const invalidContract = olderContracts[badContractName];
+		expect(invalidContract).toBe(undefined);
+	});
+
 	test('should get the right sources data', () => {
 		const validSource = snxjs.sources[validContractName];
 		expect(validSource.bytecode).not.toBe(undefined);
@@ -82,7 +96,6 @@ describe('@synthetixio/js tests', () => {
 	test('should have a list of staking rewards', () => {
 		expect(snxjs.stakingRewards.length).toEqual(0);
 		const mainnetSnxjs = synthetix({ network: Network.Mainnet });
-		console.log(mainnetSnxjs.stakingRewards);
 		expect(mainnetSnxjs.stakingRewards[0].name).toBeTruthy();
 	});
 

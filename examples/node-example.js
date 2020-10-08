@@ -6,7 +6,9 @@ const { ethers } = require('ethers');
 	// this instance exposes props for the given network: synths, sources, targets, users, as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.
 	let snxjs;
 	if (process.env.INFURA_KEY) {
-		console.log('using test infura key:', process.env.INFURA_KEY);
+		console.log(
+			'you need to run the npm command using an archive node project id as the environment variable in order to get historic data'
+		);
 		const provider = new ethers.providers.InfuraProvider('homestead', process.env.INFURA_KEY);
 		snxjs = synthetix({ network: 'mainnet', provider });
 	} else {

@@ -16,6 +16,7 @@
 		"build-browser": "webpack --mode=production --max-old-space-size=4096",
 		"build-report": "webpack-bundle-analyzer --port 4200 ./build/stats.json",
 		"examples:node": "ts-node --project tsconfig.node.json ./examples/node-example.js",
+		"examples:node-older-blocks": "ts-node --project tsconfig.node.json ./examples/node-older-blocks-example.js",
 		"examples:browser": "npm run build-browser && http-server -o ./examples/browser-example.html -c-1",
 		"lint": "eslint './src/**/*.{js,ts,tsx}' && tsc",
 		"lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}'",

@@ -1,14 +1,24 @@
 /// <reference types="../src/missing-types" />
 const { synthetix } = require('../src/index.ts');
+const { ethers } = require('ethers');
 
 (async () => {
 	// this instance exposes props for the given network: synths, sources, targets, users, as well as helper function toBytes32 - as per synthetix: https://github.com/Synthetixio/synthetix/blob/develop/index.js#L199.
-	const snxjs = synthetix({ network: 'mainnet' });
+	let snxjs;
+	if (process.env.INFURA_KEY) {
+		console.log(
+			'you need to run the npm command using an archive node project id as the environment variable in order to get historic data'
+		);
+		const provider = new ethers.providers.InfuraProvider('homestead', process.env.INFURA_KEY);
+		snxjs = synthetix({ network: 'mainnet', provider });
+	} else {
+		snxjs = synthetix({ network: 'mainnet' });
+	}
 
 	const { formatEther } = snxjs.utils;
 
 	const synths = snxjs.synths.map(({ name }) => name);
-	const fromBlock = 10260987;
+	const fromBlock = 10929392;
 	const blockOptions = fromBlock ? { blockTag: Number(fromBlock) } : {};
 
 	let totalInUSD = 0;

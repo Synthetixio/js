@@ -71,12 +71,12 @@ export declare type SynthetixJS = {
     }) => {
         method: {
             name: string;
-            params: Array<any>;
+            params: Array<unknown>;
         };
         contract: string;
     };
     defaults: {
-        [key: string]: any;
+        [key: string]: unknown;
     };
     feeds: {
         [symbol: string]: Feed;
@@ -102,11 +102,13 @@ export declare type SynthetixJS = {
     toBytes32: (key: string) => string;
     utils: typeof ethers.utils;
     contracts: ContractsMap;
+    contractsAtBlock: (block: number) => ContractsMap;
 };
 export declare type SourceData = {
     bytecode: string;
     abi: ethers.ContractInterface;
 };
+export declare type FunctionUnknown = (...args: unknown[]) => unknown;
 export declare type Target = {
     name: string;
     source: string;

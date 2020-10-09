@@ -74,8 +74,8 @@ export type SynthetixJS = {
 		network: Network;
 		data: string;
 		target: Target;
-	}) => { method: { name: string; params: Array<any> }; contract: string };
-	defaults: { [key: string]: any };
+	}) => { method: { name: string; params: Array<unknown> }; contract: string };
+	defaults: { [key: string]: unknown };
 	feeds: { [symbol: string]: Feed };
 	tokens: Array<Token>;
 	network: {
@@ -92,12 +92,15 @@ export type SynthetixJS = {
 	toBytes32: (key: string) => string;
 	utils: typeof ethers.utils;
 	contracts: ContractsMap;
+	contractsAtBlock: (block: number) => ContractsMap;
 };
 
 export type SourceData = {
 	bytecode: string;
 	abi: ethers.ContractInterface;
 };
+
+export type FunctionUnknown = (...args: unknown[]) => unknown;
 
 export type Target = {
 	name: string;

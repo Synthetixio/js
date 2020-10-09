@@ -18,36 +18,27 @@
 				const { formatEther } = snxjs.utils;
 
 				const synths = snxjs.synths.map(({ name }) => name);
-				const fromBlock = 10260987;
-				const blockOptions = fromBlock ? { blockTag: Number(fromBlock) } : {};
 
 				let totalInUSD = 0;
 
 				const unformattedSnxPrice = await snxjs.contracts.ExchangeRates.rateForCurrency(
-					snxjs.toBytes32('SNX'),
-					blockOptions
-				); // note blockOptions must be passed to `ethers.Contract` as the final parameter (and fails if no archive node)
+					snxjs.toBytes32('SNX')
+				);
 				const snxPrice = formatEther(unformattedSnxPrice);
 				console.log('snxPrice', snxPrice);
 
 				let results = await Promise.all(
 					synths.map(async (synth) => {
-						const unformattedTotalSupply = await snxjs.contracts[`Synth${synth}`].totalSupply(
-							blockOptions
-						);
+						const unformattedTotalSupply = await snxjs.contracts[`Synth${synth}`].totalSupply({});
 						const totalSupply = formatEther(unformattedTotalSupply);
 
 						const rateForSynth = formatEther(
-							await snxjs.contracts.ExchangeRates.rateForCurrency(
-								snxjs.toBytes32(synth),
-								blockOptions
-							)
+							await snxjs.contracts.ExchangeRates.rateForCurrency(snxjs.toBytes32(synth))
 						);
 						const totalSupplyInUSD = rateForSynth * totalSupply;
 						totalInUSD += totalSupplyInUSD;
 						const rateIsFrozen = await snxjs.contracts.ExchangeRates.rateIsFrozen(
-							snxjs.toBytes32(synth),
-							blockOptions
+							snxjs.toBytes32(synth)
 						);
 
 						return {

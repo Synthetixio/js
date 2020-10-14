@@ -82,7 +82,6 @@ describe('@synthetixio/js tests', () => {
 	test('should have a list of staking rewards', () => {
 		expect(snxjs.stakingRewards.length).toEqual(0);
 		const mainnetSnxjs = synthetix({ network: Network.Mainnet });
-		console.log(mainnetSnxjs.stakingRewards);
 		expect(mainnetSnxjs.stakingRewards[0].name).toBeTruthy();
 	});
 

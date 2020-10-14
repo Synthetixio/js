@@ -3,12 +3,14 @@ export declare enum Network {
     Mainnet = "mainnet",
     Ropsten = "ropsten",
     Rinkeby = "rinkeby",
+    Goerli = "goerli",
     Kovan = "kovan"
 }
 export declare enum NetworkId {
     Mainnet = 1,
     Ropsten = 3,
     Rinkeby = 4,
+    Goerli = 5,
     Kovan = 42
 }
 declare type ContractInfo = {

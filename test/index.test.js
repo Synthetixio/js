@@ -1,19 +1,6 @@
 import { ethers } from 'ethers';
 import findIndex from 'lodash/findIndex';
 
-import {
-	numSynthetixContracts,
-	badContractName,
-	validContractName,
-	numUsers,
-	validSynthName,
-	badSynthName,
-	snxBytes,
-	suspensionReason,
-	numVersions,
-	waitingPeriodSecs,
-	tokensLength,
-} from './constants';
 import synthetix from '../src';
 import { Network, NetworkId } from '../src/types';
 import { ERRORS } from '../src/constants';
@@ -25,8 +12,17 @@ describe('@synthetixio/js tests', () => {
 		snxjs = synthetix({ network: Network.Kovan });
 	});
 
-	test('should return the right number of contracts', () => {
-		expect(Object.keys(snxjs.targets).length).toBe(numSynthetixContracts);
+	test('should return contracts', () => {
+		expect(Object.keys(snxjs.targets).length).toBeGreaterThan(0);
+	});
+
+	test('should have the right mapping with the contracts', () => {
+		const synthetixContract = snxjs.contracts['Synthetix'];
+		const sUSDContract = snxjs.contracts['SynthsUSD'];
+		const sXAGContract = snxjs.contracts['SynthsXAG'];
+		expect(synthetixContract.address).toEqual(snxjs.targets.ProxyERC20.address);
+		expect(sUSDContract.address).toEqual(snxjs.targets.ProxyERC20sUSD.address);
+		expect(sXAGContract.address).toEqual(snxjs.targets.ProxysXAG.address);
 	});
 
 	test('should return the ethers object', () => {
@@ -44,38 +40,38 @@ describe('@synthetixio/js tests', () => {
 		expect(snxjs.network.id).toBe(NetworkId.Kovan);
 	});
 
-	test('should return the right number of users', () => {
-		expect(snxjs.users.length).toBe(numUsers);
+	test('should return users', () => {
+		expect(snxjs.users.length).toBeGreaterThan(0);
 	});
 
 	test('should return valid contracts', () => {
-		const validContract = snxjs.contracts[validContractName];
+		const validContract = snxjs.contracts['Synthetix'];
 		expect(validContract).not.toBe(undefined);
 	});
 
 	test('should not return an invalid contract', () => {
-		const invalidContract = snxjs.contracts[badContractName];
+		const invalidContract = snxjs.contracts['RandomContract1234'];
 		expect(invalidContract).toBe(undefined);
 	});
 
 	test('should get the right sources data', () => {
-		const validSource = snxjs.sources[validContractName];
+		const validSource = snxjs.sources['Synthetix'];
 		expect(validSource.bytecode).not.toBe(undefined);
 		expect(validSource.abi).not.toBe(undefined);
 	});
 
 	test('should not include invalid sources data', () => {
-		const invalidSource = snxjs.sources[badContractName];
+		const invalidSource = snxjs.sources['RandomContract1234'];
 		expect(invalidSource).toBe(undefined);
 	});
 
 	test('should get the right synths data', () => {
-		const validSynthIndex = findIndex(snxjs.synths, ({ name }) => name === validSynthName);
+		const validSynthIndex = findIndex(snxjs.synths, ({ name }) => name === 'sETH');
 		expect(validSynthIndex).not.toBe(-1);
 	});
 
 	test('should not include invalid synths data', () => {
-		const invalidSynthIndex = findIndex(snxjs.synths, ({ name }) => name === badSynthName);
+		const invalidSynthIndex = findIndex(snxjs.synths, ({ name }) => name === 'mETH1234');
 		expect(invalidSynthIndex).toBe(-1);
 	});
 
@@ -85,34 +81,32 @@ describe('@synthetixio/js tests', () => {
 		expect(mainnetSnxjs.stakingRewards[0].name).toBeTruthy();
 	});
 
-	test('should have the right number of versions', () => {
-		expect(Object.keys(snxjs.versions).length).toBe(numVersions);
+	test('should return several versions', () => {
+		expect(Object.keys(snxjs.versions).length).toBeGreaterThan(0);
 	});
 
-	test('should have the right suspension reasons', () => {
-		expect(snxjs.suspensionReasons[1]).toEqual(suspensionReason);
-	});
-
-	test('should not have the wrong suspension reasons', () => {
-		expect(snxjs.suspensionReasons[10000]).toBe(undefined);
+	test('should return suspension reasons', () => {
+		expect(Object.keys(snxjs.suspensionReasons).length).toBeGreaterThan(0);
 	});
 
 	test('toBytes32 is working properly', () => {
-		expect(snxjs.toBytes32('SNX')).toBe(snxBytes);
+		expect(snxjs.toBytes32('SNX')).toBe(
+			'0x534e580000000000000000000000000000000000000000000000000000000000'
+		);
 	});
 
 	test('the right defaults are available', () => {
-		expect(snxjs.defaults.WAITING_PERIOD_SECS).toBe(waitingPeriodSecs);
-		expect(snxjs.defaults.RANDOM_NAME).toBe(undefined);
+		expect(Number(snxjs.defaults.WAITING_PERIOD_SECS)).toBeGreaterThan(0);
+		expect(snxjs.defaults.SOME_RANDOM_NAME).toBe(undefined);
 	});
 
 	test('the correct tokens are returned', () => {
-		expect(Object.keys(snxjs.tokens).length).toBe(tokensLength);
+		expect(Object.keys(snxjs.tokens).length).toBeGreaterThan(0);
 	});
 
 	test('the right feeds are returned', () => {
 		expect(snxjs.feeds.SNX.asset).toBe('SNX');
-		expect(snxjs.feeds.SOMETHING).toBe(undefined);
+		expect(snxjs.feeds.SOME_RANDOM_FEED).toBe(undefined);
 	});
 
 	test('the decode method is defined', () => {

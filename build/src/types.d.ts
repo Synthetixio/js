@@ -132,6 +132,7 @@ export declare type Config = {
     network?: Network;
     signer?: ethers.Signer;
     provider?: ethers.providers.Provider;
+    useOvm?: boolean;
 };
 export declare type Synth = {
     name: string;

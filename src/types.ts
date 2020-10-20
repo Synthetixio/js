@@ -128,6 +128,7 @@ export type Config = {
 	network?: Network;
 	signer?: ethers.Signer;
 	provider?: ethers.providers.Provider;
+	useOvm?: boolean;
 };
 
 export type Synth = {

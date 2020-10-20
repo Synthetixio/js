@@ -29,8 +29,13 @@ import {
 } from './types';
 import { ERRORS } from './constants';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJS => {
+const synthetix = ({
+	networkId,
+	network,
+	signer,
+	provider,
+	useOvm = false,
+}: Config): SynthetixJS => {
 	const [currentNetwork, currentNetworkId] = selectNetwork(networkId, network);
 	return {
 		network: {
@@ -41,18 +46,18 @@ const synthetix = ({ networkId, network, signer, provider }: Config): SynthetixJ
 		networkToChainId,
 		decode,
 		defaults,
-		feeds: getFeeds({ network: currentNetwork }),
-		tokens: getTokens({ network: currentNetwork }),
-		sources: getSource({ network: currentNetwork }),
-		targets: getTarget({ network: currentNetwork }),
-		synths: getSynths({ network: currentNetwork }),
-		users: getUsers({ network: currentNetwork }),
-		versions: getVersions({ network: currentNetwork }),
-		stakingRewards: getStakingRewards({ network: currentNetwork }),
+		feeds: getFeeds({ network: currentNetwork, useOvm }),
+		tokens: getTokens({ network: currentNetwork, useOvm }),
+		sources: getSource({ network: currentNetwork, useOvm }),
+		targets: getTarget({ network: currentNetwork, useOvm }),
+		synths: getSynths({ network: currentNetwork, useOvm }),
+		users: getUsers({ network: currentNetwork, useOvm }),
+		versions: getVersions({ network: currentNetwork, useOvm }),
+		stakingRewards: getStakingRewards({ network: currentNetwork, useOvm }),
 		suspensionReasons: getSuspensionReasons(),
 		toBytes32,
 		utils: ethers.utils,
-		contracts: getSynthetixContracts(currentNetwork, signer, provider),
+		contracts: getSynthetixContracts(currentNetwork, signer, provider, useOvm),
 	};
 };
 
@@ -81,10 +86,11 @@ const selectNetwork = (networkId?: NetworkId, network?: Network): [Network, Netw
 const getSynthetixContracts = (
 	network: Network,
 	signer?: ethers.Signer,
-	provider?: ethers.providers.Provider
+	provider?: ethers.providers.Provider,
+	useOvm?: boolean
 ): ContractsMap => {
-	const sources = getSource({ network });
-	const targets: TargetsRecord = getTarget({ network });
+	const sources = getSource({ network, useOvm });
+	const targets: TargetsRecord = getTarget({ network, useOvm });
 
 	return Object.values(targets)
 		.map((target: Target) => {

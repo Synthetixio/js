@@ -16,6 +16,14 @@ describe('@synthetixio/js tests', () => {
 		expect(Object.keys(snxjs.targets).length).toBeGreaterThan(0);
 	});
 
+	test('should return different contracts for the OVM', () => {
+		const snxjsGoerli = synthetix({ network: Network.Goerli });
+		const snxjsGoerliOvm = synthetix({ network: Network.Goerli, useOvm: true });
+		const synthetixContractGoerli = snxjsGoerli.contracts['Synthetix'];
+		const synthetixContractGoerliOvm = snxjsGoerliOvm.contracts['Synthetix'];
+		expect(synthetixContractGoerli.address).not.toEqual(synthetixContractGoerliOvm.address);
+	});
+
 	test('should have the right mapping with the contracts', () => {
 		const synthetixContract = snxjs.contracts['Synthetix'];
 		const sUSDContract = snxjs.contracts['SynthsUSD'];
@@ -23,6 +31,14 @@ describe('@synthetixio/js tests', () => {
 		expect(synthetixContract.address).toEqual(snxjs.targets.ProxyERC20.address);
 		expect(sUSDContract.address).toEqual(snxjs.targets.ProxyERC20sUSD.address);
 		expect(sXAGContract.address).toEqual(snxjs.targets.ProxysXAG.address);
+	});
+
+	test('should have the right mapping with the contracts for the OVM', () => {
+		const snxjsGoerliOvm = synthetix({ network: Network.Goerli, useOvm: true });
+		const synthetixContractGoerliOvm = snxjsGoerliOvm.contracts['Synthetix'];
+		const sUSDContractGoerliOvm = snxjsGoerliOvm.contracts['SynthsUSD'];
+		expect(synthetixContractGoerliOvm.address).toEqual(snxjsGoerliOvm.targets.ProxyERC20.address);
+		expect(sUSDContractGoerliOvm.address).toEqual(snxjsGoerliOvm.targets.ProxyERC20sUSD.address);
 	});
 
 	test('should return the ethers object', () => {

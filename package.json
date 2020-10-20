@@ -5,6 +5,9 @@
 	"main": "./build/node/index.js",
 	"browser": "./build/index.js",
 	"types": "./build/src/index.d.ts",
+	"files": [
+		"build/**/*"
+	],
 	"license": "MIT",
 	"repository": {
 		"type": "git",

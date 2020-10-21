@@ -1,6 +1,5 @@
 'use strict';
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 
 module.exports = {
@@ -25,9 +24,5 @@ module.exports = {
 	resolve: {
 		extensions: ['.ts', '.js'],
 	},
-	plugins: [
-		new BundleAnalyzerPlugin({
-			generateStatsFile: true,
-		}),
-	],
+	plugins: [],
 };

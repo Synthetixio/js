@@ -55,7 +55,7 @@
 	"dependencies": {
 		"ethers": "5.0.7",
 		"lodash": "4.17.19",
-		"synthetix": "2.32.2",
+		"synthetix": "2.32.2-sip-95-remove-BCH-aggregator",
 		"web3-utils": "1.2.11"
 	},
 	"husky": {

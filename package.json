@@ -55,7 +55,7 @@
 	"dependencies": {
 		"ethers": "5.0.7",
 		"lodash": "4.17.19",
-		"synthetix": "2.35.6",
+		"synthetix": "2.36.0-alpha",
 		"web3-utils": "1.2.11"
 	},
 	"husky": {

@@ -1,6 +1,6 @@
 {
 	"name": "@synthetixio/js",
-	"version": "2.38.0",
+	"version": "2.38.0-sccp-77-defi-rebalance",
 	"description": "A library for interacting with Synthetix smart contracts",
 	"main": "./build/node/index.js",
 	"browser": "./build/index.js",

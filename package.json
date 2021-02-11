@@ -55,7 +55,7 @@
 	"dependencies": {
 		"ethers": "5.0.7",
 		"lodash": "4.17.19",
-		"synthetix": "2.38.0-sccp-77-defi-rebalance",
+		"synthetix": "2.39.0-alpha",
 		"web3-utils": "1.2.11"
 	},
 	"husky": {

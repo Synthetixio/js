@@ -6,6 +6,7 @@ export enum Network {
 	Rinkeby = 'rinkeby',
 	Goerli = 'goerli',
 	Kovan = 'kovan',
+	Local = 'local',
 }
 
 export enum NetworkId {
@@ -14,6 +15,7 @@ export enum NetworkId {
 	Rinkeby = 4,
 	Goerli = 5,
 	Kovan = 42,
+	Local = 31337,
 }
 
 type ContractInfo = {

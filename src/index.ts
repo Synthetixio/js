@@ -9,6 +9,7 @@ import {
 	getStakingRewards,
 	networks,
 	networkToChainId,
+	getNetworkFromId,
 	getTokens,
 	decode,
 	defaults,
@@ -66,7 +67,7 @@ const selectNetwork = (networkId?: NetworkId, network?: Network): [Network, Netw
 	let currentNetworkId: NetworkId = NetworkId.Mainnet;
 	if (
 		(network && !networks.includes(network)) ||
-		(networkId && !Object.values(networkToChainId).includes(networkId))
+		(networkId && !getNetworkFromId({ id: networkId }))
 	) {
 		throw new Error(ERRORS.badNetworkArg);
 	} else if (network && networks.includes(network)) {

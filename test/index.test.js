@@ -46,14 +46,14 @@ describe('@synthetixio/js tests', () => {
 	});
 
 	test('should include the supported networks', () => {
-		expect(snxjs.networkToChainId[Network.Mainnet]).toBe(NetworkId.Mainnet);
-		expect(snxjs.networkToChainId[Network.Kovan]).toBe(NetworkId.Kovan);
-		expect(snxjs.networkToChainId[Network.Rinkeby]).not.toBe(NetworkId.Ropsten);
+		expect(snxjs.networkToChainId[Network.Mainnet] == NetworkId.Mainnet).toBeTruthy();
+		expect(snxjs.networkToChainId[Network.Kovan] == NetworkId.Kovan).toBeTruthy();
+		expect(snxjs.networkToChainId[Network.Rinkeby] == NetworkId.Ropsten).not.toBeTruthy();
 	});
 
 	test('should include the current network', () => {
-		expect(snxjs.network.name).toBe(Network.Kovan);
-		expect(snxjs.network.id).toBe(NetworkId.Kovan);
+		expect(snxjs.network.name).toEqual(Network.Kovan);
+		expect(snxjs.network.id == NetworkId.Kovan).toBeTruthy();
 	});
 
 	test('should return users', () => {

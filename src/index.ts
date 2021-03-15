@@ -30,7 +30,7 @@ import {
 import { ERRORS } from './constants';
 
 const networkToChainId: Record<string, number> = Object.entries(networkToChainIdImproper).reduce(
-	(r: any, [network, networkId]: any) => {
+	(r: Record<string, number>, [network, networkId]: any) => {
 		r[network] = parseInt(networkId, 10);
 		return r;
 	},

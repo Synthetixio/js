@@ -8,7 +8,7 @@ import {
 	getSuspensionReasons,
 	getStakingRewards,
 	networks,
-	networkToChainId,
+	networkToChainId as networkToChainIdImproper,
 	getTokens,
 	decode,
 	defaults,
@@ -28,6 +28,14 @@ import {
 	Token,
 } from './types';
 import { ERRORS } from './constants';
+
+const networkToChainId: Record<string, number> = Object.entries(networkToChainIdImproper).reduce(
+	(r: any, [network, networkId]: any) => {
+		r[network] = parseInt(networkId, 10);
+		return r;
+	},
+	{}
+);
 
 const synthetix = ({
 	networkId,

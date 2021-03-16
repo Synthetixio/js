@@ -23,7 +23,7 @@
 		"lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}'",
 		"test": "jest --forceExit --coverage --no-cache",
 		"tsc": "tsc --noemit",
-		"preinstall": "npm run build"
+		"postinstall": "npm run build"
 	},
 	"author": {
 		"name": "Synthetix"

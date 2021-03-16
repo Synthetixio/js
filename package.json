@@ -17,7 +17,7 @@
 		"build": "npm run build-browser && npm run build-node",
 		"build-node": "./node_modules/.bin/tsc -p tsconfig.node.json",
 		"build-browser": "./node_modules/.bin/webpack --mode=production --max-old-space-size=4096",
-		"examples:node": "ts-node --project tsconfig.node.json ./examples/node-example.js",
+		"examples:node": "./node_modules/ts-node --project tsconfig.node.json ./examples/node-example.js",
 		"examples:browser": "npm run build-browser && http-server -o ./examples/browser-example.html -c-1",
 		"lint": "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}' && tsc",
 		"lint:fix": "./node_modules/.bin/eslint --fix './src/**/*.{js,ts,tsx}'",

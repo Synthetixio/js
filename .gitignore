@@ -1,8 +1,5 @@
 /node_modules
 
-# build
-/build
-
 # testing
 /coverage
 
@@ -32,6 +29,3 @@ pids
 *.pid.lock
 
 .vscode
-
-/build/stats.json
-

@@ -75,9 +75,9 @@ const selectNetwork = (networkId?: NetworkId, network?: Network): [Network, Netw
 		currentNetworkId = networkToChainId[network];
 	} else if (networkId) {
 		Object.entries(networkToChainId).forEach(([key, value]) => {
-			if (value === networkId) {
+			if (Number(value) === networkId) {
 				currentNetwork = key as Network;
-				currentNetworkId = value as NetworkId;
+				currentNetworkId = Number(value) as NetworkId;
 			}
 		});
 	}

@@ -6,6 +6,7 @@ export enum Network {
 	Rinkeby = 'rinkeby',
 	Goerli = 'goerli',
 	Kovan = 'kovan',
+	MainnetFork = 'mainnet-fork',
 }
 
 export enum NetworkId {
@@ -14,6 +15,7 @@ export enum NetworkId {
 	Rinkeby = 4,
 	Goerli = 5,
 	Kovan = 42,
+	MainnetFork = 31337,
 }
 
 type ContractInfo = {

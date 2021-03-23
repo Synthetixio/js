@@ -1,6 +1,6 @@
 {
 	"name": "@synthetixio/js",
-	"version": "2.41.0-alpha",
+	"version": "2.41.1-alpha",
 	"description": "A library for interacting with Synthetix smart contracts",
 	"main": "./build/node/index.js",
 	"browser": "./build/index.js",
